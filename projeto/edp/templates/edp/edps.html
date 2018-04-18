@@ -1,0 +1,38 @@
+<!-- templates/home.html-->
+{% extends 'dashboard.html' %} {% block title %} {{title}}{% endblock %} {% block dashboard_content %}
+
+
+
+
+
+<div class="row ">
+    {% for edp in edps%}
+    <div class="col-md-3 p-2">
+        <div class="card">
+            <div class="card-block">
+                <h5 class="card-title">
+                    <a href="#">{{edp}}</a>
+                </h5>
+                <p class="card-text">Objetivo :
+                    <strong> {{edp.objetivo_pedagogico}}</strong>
+                </p>
+                <p class="card-text">Atividades :
+                    <strong>{{edp.atividades}}</strong>
+                </p>
+                <p class="card-text">Metodologia :
+                    <strong>{{edp.metodologia}}</strong>
+                </p>
+            </div>
+            <div class="card-footer text-right">
+                <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Detalhes</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+
+
+{% endblock %}

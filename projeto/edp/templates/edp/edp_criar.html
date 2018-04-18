@@ -1,0 +1,12 @@
+<!-- templates/home.html-->
+{% extends 'dashboard.html' %} {% block title %} {{title}}{% endblock %} {% block dashboard_content %}
+
+
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+      </form>
+
+
+{% endblock %}

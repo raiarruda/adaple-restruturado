@@ -1,0 +1,41 @@
+<!-- templates/signup.html -->
+{% extends 'base.html' %} {% load static %} {% block title %}Dashboard{% endblock %} {% block content %}
+<div class="content">
+    <nav aria-label="breadcrumb bg-light">
+        <ol class="breadcrumb bg-light">
+            {% block breadcrumb %}
+            <li class="breadcrumb-item active" aria-current="page">
+                <a href="#">Meu painel</a>
+            </li>
+            {% endblock %}
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-sm-2">
+            <div class="card text-info bg-info">
+
+                <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item ">Minhas Edps</li>
+                    <li class="list-group-item">Perfil</li>
+                    <li class="list-group-item">Forúm</li>
+                    <li class="list-group-item">Glossário</li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-sm">
+            <div class="container-fluid">
+
+                {% block dashboard_content %} {% endblock %}
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

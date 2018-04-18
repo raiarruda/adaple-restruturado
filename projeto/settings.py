@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     #own
     'projeto.accounts',
+    'projeto.edp',
 ]
 
 MIDDLEWARE = [
