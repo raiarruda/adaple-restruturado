@@ -1,0 +1,25 @@
+<!-- templates/home.html-->
+{% extends 'dashboard.html' %} 
+
+teste
+{% block title %} {{title}}{% endblock %}
+{% block content_dashboard %} 
+
+<div class="row">
+
+    <h3>
+        <a href="#">{{edp}}</a>
+    </h3>
+    <p>Objetivo :
+        <strong> {{edp.objetivo_pedagogico}}</strong>
+    </p>
+    <p>Atividades :
+        <strong>{{edp.atividades}}</strong>
+    </p>
+    <p>Metodologia :
+        <strong>{{edp.metodologia}}</strong>
+    </p>
+
+
+</div>
+{% endblock %}
