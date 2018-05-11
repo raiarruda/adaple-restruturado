@@ -4,52 +4,108 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
+
+<meta charset="utf-8">
+<title>{% block title %} ADAPLE - {{title}} {% endblock %}</title>
+<title>Ambiente Digital de Aprendizagem de Portugues como Lingua Estrangeira</title>
+
+
 <head>
     <meta charset="utf-8">
-    <title>{% block title %} ADAPLE - {{title}} {% endblock %}</title>
-    <title>Ambiente Digital de Aprendizagem de Portugues como Lingua Estrangeira</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static "accounts/css/signin.css" %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css">
+    <!--Para stylesheets de paginas especificas-->
+    {% block stylesheet %}
+    <link rel="stylesheet" href="{% static " accounts/css/signin.css " %}"/> {%endblock%}
 </head>
 
-<body>
 
-    <div class="container">
-        <nav class="navbar navbar-dark bg-info  sticky-top">
-            <div class="navbar-header">
-                <a href="{% url 'home' %}" class="navbar-brand">ADAPLE</a>
+<body>
+    <nav class="navbar navbar-expand-md bg-primary navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa d-inline fa-lg fa-cloud"></i>
+                <b>
+                    <a href="{% url 'home' %}" class="navbar-brand">AdaLin</a>
+                </b>
+            </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
+                <ul class="navbar-nav"> {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fa d-inline fa-lg fa-user-o secundary"></i> {{user.username}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'logout' %}" class="btn btn-outline-light">Sair</a>
+                    </li>
+                </ul>
+                {% else %}
+
+                <a href="{% url 'login' %}" class="btn navbar-btn ml-2 text-white btn-secondary">
+                    <i class="fa d-inline fa-lg fa-user-circle-o"></i> Entrar</a>
+
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="py-2">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb bg-light" style="margin-bottom: 0px; margin-top: 0px;">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        {%block breadcrumb%}{% endblock%}
+
+
+                    </ul>
+                </div>
             </div>
 
-            <ul class="navbar-nav"> {% if user.is_authenticated %} 
-                <li class="nav-item">
-                     Olá {{ user.username }}! </li>
-                <li class="nav-item"> <a href="{% url 'logout' %}" class="btn btn-outline-light">Sair</a></li>
-                    
-                {% else %}
-                   <li class="nav-item">
-                    <a href="{% url 'login' %}" class="btn btn-outline-light">Entrar</a>
-                    
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
+
+
+            <div class="row py-2 my-2">
+                <div class="col-md-3">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a href="#" class="active nav-link">
+                                <i class="fa fa-home fa-home"></i>&nbsp;Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Item</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Item</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="col">
+                {% block content %} {% endblock %}
+
+            </div>
+        </div>
     </div>
-
-
-    <div class="content container">
-        {% block content %} {% endblock %}
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!--para incluir scripts somente nas paginas que precisa-->
+    {% block javascript%} {% endblock%}
 
 
-    {% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script> {% endblock %}
+    <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+    <script type="text/javascript" src="{% static 'gravador_video.js' %} "></script>
 
 </body>
 

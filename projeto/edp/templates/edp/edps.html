@@ -1,36 +1,43 @@
 <!-- templates/home.html-->
-{% extends 'dashboard.html' %} {% block title %} {{title}}{% endblock %} {% block dashboard_content %}
+{% extends 'base.html' %} {% block title %} {{title}}{% endblock %} {% block breadcrumb %}
 
+<li class="breadcrumb-item active">EDA</li>
+{% endblock%} {% block content %}
 
-
-
-
-<div class="row ">
+<a href="{% url 'edp:nova_edp' %}" class="btn btn-warning btn-lg ">Nova EDP</a>
+<div style="padding: 10px;"></div>
+<div class="list-group">
     {% for edp in edps%}
-    <div class="col-md-3 p-2">
-        <div class="card">
-            <div class="card-block">
-                <h5 class="card-title">
-                    <a href="#">{{edp}}</a>
-                </h5>
-                <p class="card-text">Objetivo :
-                    <strong> {{edp.objetivo_pedagogico}}</strong>
-                </p>
-                <p class="card-text">Atividades :
-                    <strong>{{edp.atividades}}</strong>
-                </p>
-                <p class="card-text">Metodologia :
-                    <strong>{{edp.metodologia}}</strong>
-                </p>
-            </div>
-            <div class="card-footer text-right">
-                <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Detalhes</a>
-                <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-primary ">+ recursos</a>
-            </div>
+
+    <a class="list-group-item list-group-item-action flex-column align-items-start ">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{edp}}</h5>
+            <small>{{edp.created_at}}</small>
         </div>
-    </div>
+        <p class="mb-1">
+            <strong>Objetivo: </strong>{{edp.objetivo_pedagogico}}</p>
+        <p class="mb-1">
+            <strong>Atividades: </strong>{{edp.atividades}}</p>
+        <p class="mb-1">
+            <strong>Metodo: </strong>{{edp.metodologia}}</p>
+
+
+        <small class="list-footer text-right">
+            <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Detalhes</a>
+            <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-info ">+ recursos</a>
+            <a href="{% url 'edp:nova_resposta_edp' edp.slug  %}" class="btn btn-danger ">+ resposta</a>
+        </small>
+    </a>
+
     {% endfor %}
 </div>
+
+
+
+
+
+
+
 
 
 
