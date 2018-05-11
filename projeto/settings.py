@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     #own
     'projeto.accounts',
     'projeto.edp',
+
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'

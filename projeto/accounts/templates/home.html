@@ -13,6 +13,12 @@
 {% endif %}
 
 
+<a href="{% url 'accounts:cadastro'%}" class='btn btn-success btn-larger'>Cadastro</a>
 
-<h1> Pagina inicial, sem ideias ainda</h1>
+ {% if user.is_authenticated and user.eh_professor %}
+<p>Você é professor</p>  
+  {% else %}
+      <p>Você é aluno</p>
+    {% endif %}
+
 {% endblock %}

@@ -6,7 +6,8 @@ from .forms import form_edp, form_turma, form_recursos_edp
 from django.contrib import messages
 # Create your views here.
 from django.urls import reverse
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 #funcoes de listagem
 
 def edps(request):

@@ -2,7 +2,8 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your models here.
 class Habilidade (models.Model):
@@ -25,7 +26,7 @@ class Edp(models.Model):
     #)
     atividades = models.TextField('Atividades')
     metodologia = models.TextField('Metodologia')
-    usuario = models.ForeignKey(User, related_name='edps', on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='edps', on_delete=models.CASCADE)
     
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
