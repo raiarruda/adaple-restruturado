@@ -7,17 +7,18 @@ from django.contrib import messages
 # Create your views here.
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 User = get_user_model()
 #funcoes de listagem
-
+@login_required
 def edps(request):
     edps = Edp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
-    template = 'edp/edps.html'
+    template = 'edp/listarEDA.html'
 
     return render(request, template, {'title': title, 'edps': edps})
 
-
+@login_required
 def turmas (request):
     turmas = Turma.objects.all()
     title = 'ADAPLE - TURMAS'
@@ -26,7 +27,7 @@ def turmas (request):
     return render(request, template, {'title': title, 'turmas': turmas})
 
 #funcoes de detalhes 
-
+@login_required
 def detalhe_edp(request, slug):
    
     edp = get_object_or_404(Edp, slug=slug)
@@ -36,7 +37,7 @@ def detalhe_edp(request, slug):
     return render(request, template, {'title': title, 'edp': edp})
 
 #funcoes de preecher formulario
-
+@login_required
 def nova_edp(request):
     # TODO: habilidades
     template = 'edp/edp_nova.html'
@@ -58,7 +59,7 @@ def nova_edp(request):
         form = form_edp()
         return render( request, template, {'form':form})
 
-
+@login_required
 def nova_turma(request):
     template = 'edp/turma_nova.html'
     title= 'Criar nova turma'
@@ -80,7 +81,7 @@ def nova_turma(request):
         form = form_turma()
         return render( request, template, {'form':form})
 
-
+@login_required
 def adicionar_recursos(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
     template = 'edp/adicionar_recursos.html'
@@ -103,7 +104,7 @@ def adicionar_recursos(request, slug):
         return render( request, template, {'form':form})
 
 #funcoes de clicar
-
+@login_required
 def nova_matricula(resquest, slug):
     
     turma = get_object_or_404(Turma, slug=slug)

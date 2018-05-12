@@ -1,50 +1,46 @@
 <!-- templates/signup.html -->
-{% extends 'base.html' %} {% load static %} {% block title %}Dashboard{% endblock %} {% block content %}
-<div class="content">
-    <nav aria-label="breadcrumb bg-light">
-        <ol class="breadcrumb bg-light">
-            {% block breadcrumb %}
-            <li class="breadcrumb-item active" aria-current="page">
-                <a href="#">Meu painel</a>
-            </li>
-            {% endblock %}
-        </ol>
-    </nav>
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} 
 
 
+
+{% block content %}
+<div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <div class="col-sm-2">
-            <div class="card text-info bg-info">
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item ">Minhas Edps</li>
-                    <li class="list-group-item">Perfil</li>
-                    <li class="list-group-item">Forúm</li>
-                    <li class="list-group-item">Glossário</li>
-                </ul>
-            </div>
-
-        </div>
-        <div class="col-sm">
-            <div class="container-fluid">
-                
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    
-                {% block dashboard_content %} {% endblock %}
-            </div>
+        <div class="col-md-12">
+            <ul class="breadcrumb bg-light" style="margin-bottom: 0px; margin-top: 0px;">
+                <li class="breadcrumb-item">
+                    <a href="#">Home</a>
+                </li>
+                {%block breadcrumb%}{% endblock%}
 
 
-
+            </ul>
         </div>
     </div>
 
+
+
+    <div class="row py-2 my-2">
+        <div class="col-md-3">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a href="#" class="active nav-link">
+                        <i class="fa fa-home fa-home"></i>&nbsp;Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Item</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Item</a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col">
+        {% block dashboard %} {% endblock %}
+
+    </div>
 </div>
+
 {% endblock %}

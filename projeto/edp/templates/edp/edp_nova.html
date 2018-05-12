@@ -1,10 +1,10 @@
 <!-- templates/home.html-->
-{% extends 'dashboard.html' %} {% block title %} {{title}}{% endblock %} {% block dashboard_content %}
+{% extends 'dashboard.html' %}{% load crispy_forms_tags %} {% block title %} {{title}}{% endblock %} {% block dashboard %}
 
 
 <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form | crispy }}
         <button type="submit">Salvar</button>
       </form>
 

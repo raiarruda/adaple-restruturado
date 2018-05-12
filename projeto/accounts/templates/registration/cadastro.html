@@ -1,8 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Sign up for a free account</h2>
-  <p class="lead">Select below the type of account you want to create</p>
-  <a href="{% url 'accounts:cadastro_aluno' %}" class="btn btn-lg" role="button">I'm a student</a>
-  <a href="{% url 'accounts:cadastro_professor' %}" class="btn btn-danger btn-lg" role="button">I'm a teacher</a>
+
+
+<div class="py-5 text-white bg-secondary">
+  <div class="container">
+    <div class="row text-center">
+      <div class="text-md-left text-center align-self-center my-5">
+        <h1 class="display-1">Cadastre-se</h1>
+        <p class="lead">Faça seu cadastro para ter acesso aos materiais de estudo.</p>
+        <a href="{% url 'accounts:cadastro_aluno' %}" class="btn btn-lg mx-1 btn-warning">Aluno</a>
+        <a href="{% url 'accounts:cadastro_professor' %}" class="btn btn-lg btn-primary mx-1">Professor</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock %}

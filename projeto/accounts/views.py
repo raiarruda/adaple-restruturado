@@ -23,7 +23,7 @@ class CadastroAlunoView(CreateView):
     template_name = 'registration/cadastroForm.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'student'
+        kwargs['user_type'] = 'aluno'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -37,7 +37,7 @@ class CadastroProfessorView(CreateView):
     template_name = 'registration/cadastroForm.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['user_type'] = 'teacher'
+        kwargs['user_type'] = 'professor'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):

@@ -16,8 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css">
     <!--Para stylesheets de paginas especificas-->
-    {% block stylesheet %}
-    <link rel="stylesheet" href="{% static " accounts/css/signin.css " %}"/> {%endblock%}
+    {% block stylesheet %}{% endblock %}
 </head>
 
 
@@ -55,45 +54,7 @@
 
 
     <div class="py-2">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="breadcrumb bg-light" style="margin-bottom: 0px; margin-top: 0px;">
-                        <li class="breadcrumb-item">
-                            <a href="#">Home</a>
-                        </li>
-                        {%block breadcrumb%}{% endblock%}
-
-
-                    </ul>
-                </div>
-            </div>
-
-
-
-            <div class="row py-2 my-2">
-                <div class="col-md-3">
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                            <a href="#" class="active nav-link">
-                                <i class="fa fa-home fa-home"></i>&nbsp;Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Item</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Item</a>
-                        </li>
-                    </ul>
-                </div>
-
-
-                <div class="col">
-                {% block content %} {% endblock %}
-
-            </div>
-        </div>
-    </div>
+    {% block content %}{% endblock %}
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -105,7 +66,7 @@
     <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
-    <script type="text/javascript" src="{% static 'gravador_video.js' %} "></script>
+   
 
 </body>
 

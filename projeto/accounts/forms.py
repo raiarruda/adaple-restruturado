@@ -8,11 +8,11 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class CadastroAlunoForm(UserCreationForm):
-    a =  forms.ModelMultipleChoiceField(
-        queryset= assuntos.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
-    )
+  #  a =  forms.ModelMultipleChoiceField(
+    #     queryset= assuntos.objects.all(),
+    #     widget=forms.CheckboxSelectMultiple,
+        
+    # )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -23,7 +23,7 @@ class CadastroAlunoForm(UserCreationForm):
         user.eh_aluno = True
         user.save()
         student = Student.objects.create(user=user)
-        student.a.add(*self.cleaned_data.get('a'))
+#        student.a.add(*self.cleaned_data.get('a'))
 
         return user
         

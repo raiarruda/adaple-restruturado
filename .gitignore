@@ -4,5 +4,6 @@
 *.vscode
 __pycache__
 devev
+devenv
 db.sqlite3
 .DS_Store

@@ -1,8 +1,10 @@
 <!-- templates/home.html-->
-{% extends 'base.html' %} {% block title %} {{title}}{% endblock %} {% block breadcrumb %}
+{% extends 'dashboard.html' %} {% block title %} {{title}}{% endblock %} 
+
+{% block breadcrumb %}
 
 <li class="breadcrumb-item active">EDA</li>
-{% endblock%} {% block content %}
+{% endblock%} {% block dashboard %}
 
 <a href="{% url 'edp:nova_edp' %}" class="btn btn-warning btn-lg ">Nova EDP</a>
 <div style="padding: 10px;"></div>
@@ -25,7 +27,6 @@
         <small class="list-footer text-right">
             <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Detalhes</a>
             <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-info ">+ recursos</a>
-            <a href="{% url 'edp:nova_resposta_edp' edp.slug  %}" class="btn btn-danger ">+ resposta</a>
         </small>
     </a>
 
