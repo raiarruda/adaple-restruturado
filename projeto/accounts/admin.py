@@ -3,3 +3,4 @@ from projeto.accounts.models import assuntos, User # Register your models here.
 
 
 admin.site.register(assuntos)
+admin.site.register(User)

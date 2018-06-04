@@ -1,22 +1,21 @@
 <!-- templates/home.html-->
-{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %} {% if user.is_authenticated %} Hi {{ user.username
-}}!
-<p>
-  <a href="{% url 'logout' %}">logout</a>
-</p>
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">login</a>
-{% endif %}
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %} 
+
+<h1>Seja Bem Vindo ao Ambiente Digital de Aprendizagem de Línguas!!!</h1>
 
 
-<a href="{% url 'accounts:cadastro'%}" class='btn btn-success btn-larger'>Cadastro</a>
 
 {% if user.is_authenticated and user.eh_professor %}
 <p>Você é professor</p>
 {% elif user.is_authenticated and user.eh_aluno %}
 <p>Você é aluno</p>
 {%else%}
-<p>Você precisa ser usuário do ambiente e está conectado</p>
+
+<h3>Caso não seja cadastrado no ambiente clique no botão cadastro</h3>
+<a href="{% url 'accounts:cadastro'%}" class='btn btn-success btn-larger'>Cadastro</a>
+<h3>Se já possui um cadastro clique no botão Entrar</h3>
+<a href="{% url 'login' %}" class="btn btn-info btn-larger">Entrar</a>
+
+
 
 {% endif %} {% endblock %}

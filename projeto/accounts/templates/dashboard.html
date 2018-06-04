@@ -19,28 +19,45 @@
     </div>
 
 
-
+    {% if user.is_authenticated and user.eh_professor %}
     <div class="row py-2 my-2">
         <div class="col-md-3">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a href="#" class="active nav-link">
-                        <i class="fa fa-home fa-home"></i>&nbsp;Home</a>
+                    <a href="{% url 'edp:edps' %}" class="active nav-link">
+                        <i class="fa fa-home fa-home"></i>&nbsp;EDA Criadas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Item</a>
+                    <a class="nav-link" href="#">EDA respondidas</a>
+                </li>
+                
+            </ul>
+        </div>
+    {% elif user.is_authenticated and user.eh_aluno %}
+    <div class="row py-2 my-2">
+        <div class="col-md-3">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a href="{% url 'edp:edps' %}" class="active nav-link">
+                        <i class="fa fa-home fa-home"></i>&nbsp;Todas EDA</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Item</a>
+                    <a class="nav-link" href="#">Minhas EDA</a>
                 </li>
+                
             </ul>
         </div>
 
+    
+    
+    {% endif %}
 
-        <div class="col">
+
+    <div class="col">
         {% block dashboard %} {% endblock %}
 
     </div>
+
 </div>
 
 {% endblock %}

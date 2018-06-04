@@ -1,13 +1,23 @@
-from django.shortcuts import render, redirect, render_to_response, get_object_or_404
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.utils.text import slugify
-from .models import Edp, Habilidade, Turma, Matricula
-from .forms import form_edp, form_turma, form_recursos_edp
+from django.conf import settings
 from django.contrib import messages
-# Create your views here.
-from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+from django.http import (HttpRequest, HttpResponse, HttpResponseRedirect,
+                         StreamingHttpResponse)
+from django.shortcuts import (get_object_or_404, redirect, render,
+                              render_to_response)
+# Create your views here.
+from django.urls import reverse
+from django.utils.text import slugify
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import CreateView
+
+from .forms import (Edp_form,  UploadFileForm, form_edp,
+                    form_recursos_edp, form_resposta_edp, form_turma)
+#from apiclient.discovery import build
+from .models import Edp, Habilidade, Matricula, Turma, RecursosEdp
+
 User = get_user_model()
 #funcoes de listagem
 @login_required
@@ -15,6 +25,7 @@ def edps(request):
     edps = Edp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
+    
 
     return render(request, template, {'title': title, 'edps': edps})
 
@@ -37,27 +48,45 @@ def detalhe_edp(request, slug):
     return render(request, template, {'title': title, 'edp': edp})
 
 #funcoes de preecher formulario
-@login_required
+#@login_required
 def nova_edp(request):
-    # TODO: habilidades
+
     template = 'edp/edp_nova.html'
     title= 'Criar nova'
-
+#    prof = request.User
     if request.method == "POST":
-            form = form_edp(request.POST)
-            if form.is_valid():
+        form = Edp_form(request.POST)
+        if form.is_valid():
+            
+            edp = form.save(request)
+            #edp.usuario = settings.AUTH_USER_MODEL
+            edp.slug = slugify(edp.titulo)
+            #   edp.habilidades.add(cleaned_data.get('habilidades'))
+            edp.save()
 
-                edp = form.save(commit=False)
-                edp.usuario = request.user
-                edp.slug = slugify(edp.titulo)
-                edp.save()
+        edp.slug = slugify(edp.titulo)
+        return redirect('edp:edps')
 
-                return redirect('edp:edps')
-            else:
-                return redirect('edps:edps')
+        # else:
+        #     return redirect('edps:edps')
     else:
-        form = form_edp()
+        form = Edp_form()
         return render( request, template, {'form':form})
+
+# class nova_edp(CreateView):
+#     model = Edp
+#     form_class = Edp_form
+#     template_name = 'edp/edp_nova.html'
+#     #usuario = settings.AUTH_USER_MODEL
+#     def get_context_data(self, **kwargs):
+#        return super().get_context_data(**kwargs)
+
+#     def form_valid(self, form):
+        
+#         edp = form.save()
+       
+#         return redirect('edp:edps')
+
 
 @login_required
 def nova_turma(request):
@@ -79,7 +108,7 @@ def nova_turma(request):
                 return redirect('edp:edps')
     else:
         form = form_turma()
-        return render( request, template, {'form':form})
+        return render( request, template, {'form':form, 'title':title})
 
 @login_required
 def adicionar_recursos(request, slug):
@@ -101,7 +130,7 @@ def adicionar_recursos(request, slug):
                 return redirect('edp:edps')
     else:
         form = form_recursos_edp()
-        return render( request, template, {'form':form})
+        return render( request, template, {'form':form, 'title':title, 'edp':edp})
 
 #funcoes de clicar
 @login_required
@@ -117,3 +146,49 @@ def nova_matricula(resquest, slug):
         messages.info(resquest, 'Você já está inscrito no curso.')
     return redirect('accounts:dashboard')
 
+
+@login_required
+def responder_edp(request, slug):
+    edp = get_object_or_404(Edp, slug=slug)
+    template = 'edp/responder_edp.html'
+    title= 'Responder:- ' + edp.titulo
+    
+    if request.method == "POST":
+            form = form_resposta_edp(request.POST)
+            if form.is_valid():
+
+                resposta_edp = form.save(commit=False)
+                resposta_edp.edp=edp
+                resposta_edp.save()
+
+               # return redirect(reverse(edp.get_absolute_url()))
+                return redirect('edp:edps')
+            else:
+                return redirect('edp:edps')
+    else:
+        form = form_resposta_edp()
+        return render( request, template, {'form':form, 'title':title})
+
+
+@csrf_exempt
+def salvar_video(request, slug):
+    edp = get_object_or_404(Edp, slug=slug)
+   
+    if request.method == 'POST' and request.FILES['video_file']:
+        myfile = request.FILES['video_file']
+        form = UploadFileForm(request.POST, request.FILES)
+        fs = FileSystemStorage()
+        filename = fs.save('video/'+ myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+       
+        if form.is_valid():
+
+            recursos_edp = form.save(commit=False)
+            recursos_edp.edp=edp
+            recursos_edp.video=uploaded_file_url
+            recursos_edp.save()
+
+        return render(request, 'edp/listarEDA.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+    return render(request, 'edp/camera.html')

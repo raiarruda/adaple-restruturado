@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'projeto.edp',
 
     'crispy_forms',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.media',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -126,15 +128,22 @@ USE_TZ = True
 
 PROJECT_DIR  = os.path.dirname(__file__) 
 
-STATIC_ROOT = os.path.join(PROJECT_DIR,'')
-STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(PROJECT_DIR,'')
+#STATIC_URL = '/static/'
 
 #STATIC_URL = '/static/'
 #STATIC_ROOT = '../adaple/static/'
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = ''
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'accounts:dashboard'
 LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'login'

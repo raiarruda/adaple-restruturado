@@ -1,0 +1,27 @@
+{% extends 'dashboard.html' %}{% load staticfiles %} {% load static %}
+
+{% block dashboard %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+
+    <video id="your-video-id" controls autoplay=""></video>
+<p>
+    <button id="iniciar" class="btn btn-primary" > Começar gravação </button>
+</p>
+    <p>
+
+          <button class="btn btn-success" id="terminar" disabled>Terminar Gravação</button>
+    </p>
+
+  
+
+
+    <script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
+
+    {% block javascript%}
+  
+    {% endblock %}
+    {% endblock %}

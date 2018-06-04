@@ -13,6 +13,8 @@ urlpatterns = [
     path('nova/turma', views.nova_turma, name= "nova_turma"),
     path('nova/matricula/<slug:slug>', views.nova_matricula, name= "nova_matricula"),
     path('adicionar/recursos/<slug:slug>', views.adicionar_recursos, name= "adicionar_recursos"),
-     path('turmas', views.turmas, name= "turmas"),
+    path('responder/<slug:slug>', views.responder_edp, name="responder_edp"),
+    path('turmas', views.turmas, name= "turmas"),
+    path('camera/<slug:slug>', views.salvar_video, name="camera"),
   #  path('login/', auth_views.LoginView.as_view(), name='login'),
 ]

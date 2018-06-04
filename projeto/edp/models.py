@@ -1,8 +1,18 @@
+import os
+
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth import get_user_model
+
+STATIC_CUR_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
+
+upload_storage = FileSystemStorage(location=STATIC_CUR_DIR)
+
+
+
 User = get_user_model()
 
 # Create your models here.
@@ -18,12 +28,19 @@ class Edp(models.Model):
     titulo = models.CharField('Título', max_length=100)
     slug = models.SlugField('Atalho')
     objetivo_pedagogico = models.TextField('Objetivo Pegagogico')
-  #  habilidades = models.ManyToManyField('Habilidades', Habilidade)
+    habilidades = models.ManyToManyField(Habilidade, related_name='habilidade_edp')
    # habilidades = ListCharField(
     #    base_field=models.CharField(max_length=10),
      #   size=6,
       #  max_length=(6 * 11)  # 6 * 10 character nominals, plus commas
     #)
+    
+    # habilidade_traducao =  models.BooleanField('Tradução')
+    # habilidade_leitura =  models.BooleanField('Leitura')
+    # habilidade_escrita =  models.BooleanField('Escrita')
+    # habilidade_fala =  models.BooleanField('Fala')
+    # habilidade_audicao =  models.BooleanField('Audição')
+    
     atividades = models.TextField('Atividades')
     metodologia = models.TextField('Metodologia')
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='edps', on_delete=models.CASCADE)
@@ -37,9 +54,9 @@ class Edp(models.Model):
     def __str__(self):
         return self.titulo
     
-    @models.permalink
-    def get_absolute_url(self):
-        return ('edp:detalhes_edp', (), {'slug': self.slug})
+    # @models.permalink
+    # def get_absolute_url(self):
+    #     return ('edp:detalhe_edp', (), {'slug': self.slug})
 
     
     class Meta:
@@ -103,10 +120,28 @@ class RecursosEdp(models.Model):
     recebe_video_embedded = models.BooleanField('Responder com videos do youtube?', default=False )
     recebe_video = models.BooleanField('Responder com video?', default=False)
     recebe_imagem = models.BooleanField('Responder com imagem ?', default=False)
-
+    video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
 
     def __str__(self):
         return self.edp.titulo
     
     def iniciar(self):
         self.save()
+
+        
+class RespostaEdp(models.Model):
+   
+    edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='respostas', on_delete=models.CASCADE)
+    video_embedded = models.TextField('Video embedded', blank=True)
+    texto = models.TextField('Texto', blank=True)
+    video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
+  
+    def __str__(self):
+        return self.edp.titulo
+    
+    def iniciar(self):
+        self.save()
+
+class db_video(models.Model):
+    nome = models.CharField(max_length=20)
+    video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")

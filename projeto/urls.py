@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('projeto.accounts.urls', namespace='accounts')),
     path('edps/', include('projeto.edp.urls', namespace='edp')),
     path('accounts/', include('django.contrib.auth.urls')),
+    
 
 ]
 urlpatterns += staticfiles_urlpatterns()

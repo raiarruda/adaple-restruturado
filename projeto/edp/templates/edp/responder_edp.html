@@ -4,23 +4,26 @@
 {% block dashboard %}
 
 
+
 <form method="post">
         {% csrf_token %}
         {{ form | bootstrap }}
 <div>
-     <p>
-             <a href="{% url 'edp:camera' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
-     </p>  
-
-        <button class="btn btn-larger btn-primary"type="submit">Salvar Recursos</button>
-      </form>
-    
+        <video id="your-video-id" controls autoplay=""></video>
+        <button id="iniciar" class="btn btn-danger"> Começar gravação </button>
   
-{% comment %}{% endcomment%}
+        <button id="terminar" class="btn" disabled>terminar</button>
+    </div>
+  
+        <button class="btn btn-primary" type="submit">Salvar</button>
+      
+
+      </form>
+
 
 {% endblock %}
 {% block javascript%}
 <script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
+<script type="text/javascript" src="{% static 'gravador.js' %} "></script>
 {% endblock %}
