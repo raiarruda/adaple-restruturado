@@ -1,16 +1,40 @@
 <!-- templates/home.html--> 
 {% extends 'dashboard.html' %}{%load staticfiles %} {% block title %}{{title}}{% endblock %}
 {% load bootstrap %}
-{% block dashboard %}
+
+{%block breadcrumb%}  
+
+<li class="breadcrumb-item">
+                <a href="#">Estruturas Digital de Aprendizagem</a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">{{edp}}</a></li>
+            <li class="breadcrumb-item active">
+                    <a href="#">Adicionar Recursos</a>
+                </li>
+                {% endblock%}
+                
+                {% block dashboard %}
 
 
 <form method="post">
         {% csrf_token %}
-        {{ form | bootstrap }}
+ {% comment %}      {{ form | bootstrap }} {% endcomment %}
+
+ <h4 class="font-monospace p-2">Recursos para o aprendiz visualizar</h2>
+
+ {{form.texto | bootstrap}}
+ {{form.video_embedded | bootstrap}}
+
 <div>
      <p>
              <a href="{% url 'edp:camera' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
      </p>  
+
+
+<h4 class="font-monospace p-2">Recursos para o aprendiz usar</h2>
+{{form.recebe_texto | bootstrap}}
+{{form.recebe_video_embedded | bootstrap}}
+{{form.recebe_video | bootstrap}}
 
         <button class="btn btn-larger btn-primary"type="submit">Salvar Recursos</button>
       </form>
@@ -18,9 +42,4 @@
   
 {% comment %}{% endcomment%}
 
-{% endblock %}
-{% block javascript%}
-<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-<script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
 {% endblock %}

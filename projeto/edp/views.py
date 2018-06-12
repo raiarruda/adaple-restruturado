@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
 
 from .forms import (Edp_form,  UploadFileForm, form_edp,
-                    form_recursos_edp, form_resposta_edp, form_turma)
+                    form_recursos_edp, form_resposta_edp, form_turma, UploadFileFormResposta)
 #from apiclient.discovery import build
 from .models import Edp, Habilidade, Matricula, Turma, RecursosEdp
 
@@ -23,11 +23,24 @@ User = get_user_model()
 @login_required
 def edps(request):
     edps = Edp.objects.all()
+    recursos = RecursosEdp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
     
 
-    return render(request, template, {'title': title, 'edps': edps})
+    return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+
+@login_required
+def minhas_edps(request):
+    #edps = Edp.objects.filter(usuario=request.user)
+    edps = request.user.edps.all()
+    recursos = RecursosEdp.objects.all()
+    title = 'Estruturas Digitais Pedagogicas'
+    template = 'edp/listarEDA.html'
+    
+
+    return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+
 
 @login_required
 def turmas (request):
@@ -42,10 +55,11 @@ def turmas (request):
 def detalhe_edp(request, slug):
    
     edp = get_object_or_404(Edp, slug=slug)
+    recursos = get_object_or_404(RecursosEdp, edp=edp)
+    form = form_resposta_edp()
     template = 'edp/edp_detalhes.html'
     title = edp.titulo + '- Detalhes'
-
-    return render(request, template, {'title': title, 'edp': edp})
+    return render(request, template, {'title': title, 'edp': edp, 'recursos': recursos, 'form':form})
 
 #funcoes de preecher formulario
 #@login_required
@@ -150,6 +164,7 @@ def nova_matricula(resquest, slug):
 @login_required
 def responder_edp(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
+    recursos = get_object_or_404(RecursosEdp, edp=edp)
     template = 'edp/responder_edp.html'
     title= 'Responder:- ' + edp.titulo
     
@@ -167,7 +182,7 @@ def responder_edp(request, slug):
                 return redirect('edp:edps')
     else:
         form = form_resposta_edp()
-        return render( request, template, {'form':form, 'title':title})
+        return render( request, template, {'form':form, 'title':title, 'edp':edp, 'recursos': recursos})
 
 
 @csrf_exempt
@@ -189,6 +204,30 @@ def salvar_video(request, slug):
             recursos_edp.save()
 
         return render(request, 'edp/listarEDA.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+    return render(request, 'edp/camera.html')
+
+
+@csrf_exempt
+def salvar_video_resposta(request, slug):
+    edp = get_object_or_404(Edp, slug=slug)
+   
+    if request.method == 'POST' and request.FILES['video_file']:
+        myfile = request.FILES['video_file']
+        form = UploadFileFormResposta(request.POST, request.FILES)
+        fs = FileSystemStorage()
+        filename = fs.save('video/'+ myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+       
+        if form.is_valid():
+
+            resposta_edp = form.save(commit=False)
+            resposta_edp.edp=edp
+            resposta_edp.video=uploaded_file_url
+            resposta_edp.save()
+
+        return render(request, 'edp/responder_edp.html', {
             'uploaded_file_url': uploaded_file_url
         })
     return render(request, 'edp/camera.html')

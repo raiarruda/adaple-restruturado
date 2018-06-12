@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.utils import timezone
+from embed_video.fields import EmbedVideoField
 
 STATIC_CUR_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
 
@@ -24,27 +25,23 @@ class Habilidade (models.Model):
 
 
 class Edp(models.Model):
-    
+    NIVEL_CHOICES = (
+		(0, 'Iniciante'),
+		(1, 'Básico'),
+		(2, 'Proficiente'),
+        (3, 'Avançado'),
+        (4, 'Fluente')
+	)
+
     titulo = models.CharField('Título', max_length=100)
     slug = models.SlugField('Atalho')
     objetivo_pedagogico = models.TextField('Objetivo Pegagogico')
-    habilidades = models.ManyToManyField(Habilidade, related_name='habilidade_edp')
-   # habilidades = ListCharField(
-    #    base_field=models.CharField(max_length=10),
-     #   size=6,
-      #  max_length=(6 * 11)  # 6 * 10 character nominals, plus commas
-    #)
-    
-    # habilidade_traducao =  models.BooleanField('Tradução')
-    # habilidade_leitura =  models.BooleanField('Leitura')
-    # habilidade_escrita =  models.BooleanField('Escrita')
-    # habilidade_fala =  models.BooleanField('Fala')
-    # habilidade_audicao =  models.BooleanField('Audição')
-    
+    habilidades = models.ManyToManyField(Habilidade, related_name='habilidade_edp')    
     atividades = models.TextField('Atividades')
     metodologia = models.TextField('Metodologia')
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='edps', on_delete=models.CASCADE)
-    
+    nivel = models.IntegerField('Nível de proficiência', choices=NIVEL_CHOICES, default=1,blank=True)
+
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
@@ -54,9 +51,9 @@ class Edp(models.Model):
     def __str__(self):
         return self.titulo
     
-    # @models.permalink
-    # def get_absolute_url(self):
-    #     return ('edp:detalhe_edp', (), {'slug': self.slug})
+    @models.permalink
+    def get_absolute_url(self):
+        return ('edp:detalhe_edp', (), {'slug': self.slug})
 
     
     class Meta:
@@ -114,7 +111,7 @@ class Matricula(models.Model):
 class RecursosEdp(models.Model):
    
     edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='edps', on_delete=models.CASCADE)
-    video_embedded = models.TextField('Video embedded', blank=True)
+    video_embedded = EmbedVideoField(blank=True, null=True)
     texto = models.TextField('Texto', blank=True)
     recebe_texto = models.BooleanField('Responder texto ?', default=False)
     recebe_video_embedded = models.BooleanField('Responder com videos do youtube?', default=False )
@@ -132,7 +129,7 @@ class RecursosEdp(models.Model):
 class RespostaEdp(models.Model):
    
     edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='respostas', on_delete=models.CASCADE)
-    video_embedded = models.TextField('Video embedded', blank=True)
+    video_embedded = EmbedVideoField(blank=True, null=True)
     texto = models.TextField('Texto', blank=True)
     video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
   

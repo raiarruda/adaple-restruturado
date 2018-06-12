@@ -7,6 +7,10 @@
 
 {% if user.is_authenticated and user.eh_professor %}
 <p>Você é professor</p>
+
+
+<a href="{% url 'edp:edps' %}">Lista de todas as EDA</a>
+<a href="{% url 'edp:minhas_edps' %}">Lista de EDA de sua autoria</a>
 {% elif user.is_authenticated and user.eh_aluno %}
 <p>Você é aluno</p>
 {%else%}

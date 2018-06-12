@@ -3,7 +3,7 @@ from .models import Edp, Habilidade, Turma, Matricula, RecursosEdp, RespostaEdp,
 from django.db import transaction
 from django.conf import settings
 from django.utils.text import slugify
-
+from embed_video.fields import EmbedVideoField
 
 class form_edp(forms.ModelForm):
 
@@ -19,7 +19,7 @@ class form_edp(forms.ModelForm):
     )
     class Meta:
         model = Edp
-        fields = ('titulo', 'objetivo_pedagogico', 'atividades', 'metodologia', 'habilidades')
+        fields = ('titulo', 'objetivo_pedagogico','nivel', 'atividades', 'metodologia', 'habilidades')
     
   #  @transaction.atomic
    # def save(self)
@@ -40,7 +40,7 @@ class Edp_form(forms.ModelForm):
     )
     class Meta():
         model = Edp
-        fields = ('titulo','habilidades', 'objetivo_pedagogico', 'atividades', 'metodologia' )
+        fields = ('titulo','habilidades', 'nivel', 'objetivo_pedagogico', 'atividades', 'metodologia' )
     
     @transaction.atomic
     def save(self, request):
@@ -57,8 +57,8 @@ class Edp_form(forms.ModelForm):
 
 class form_recursos_edp(forms.ModelForm):
  
-    video_embedded = forms.CharField(label='Video Externo',  required=True)
-    texto = forms.CharField(label='Texto',  required=True, widget=forms.Textarea)
+    video_embedded = forms.CharField(label='Video Externo')
+    texto = forms.CharField(label='Texto',   widget=forms.Textarea)
 
 
     class Meta:
@@ -73,6 +73,7 @@ class form_turma(forms.ModelForm):
         model = Turma
 
         fields = ('nome', 'start_date',)
+
 # class form_matricula(forms.ModelForm):
     # class Meta:
     #     model = Matricula
@@ -93,6 +94,13 @@ class form_resposta_edp(forms.ModelForm):
 
 
 class UploadFileForm(forms.ModelForm): 
+   
+    video_file = forms.FileField()
+    class Meta:
+        model = RecursosEdp
+        fields = ['video', ]
+
+class UploadFileFormResposta(forms.ModelForm): 
    
     video_file = forms.FileField()
     class Meta:

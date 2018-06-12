@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <ul class="breadcrumb bg-light" style="margin-bottom: 0px; margin-top: 0px;">
                 <li class="breadcrumb-item">
-                    <a href="#">Home</a>
+                    <a href="{% url 'accounts:dashboard' %}">Página Inicial</a>
                 </li>
                 {%block breadcrumb%}{% endblock%}
 
@@ -21,17 +21,22 @@
 
     {% if user.is_authenticated and user.eh_professor %}
     <div class="row py-2 my-2">
-        <div class="col-md-3">
+        <div class="col-md-3"> {% with request.resolver_match.url_name as url_name %}
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a href="{% url 'edp:edps' %}" class="active nav-link">
-                        <i class="fa fa-home fa-home"></i>&nbsp;EDA Criadas</a>
+                    <a href="{% url 'edp:edps' %}" class="{% if url_name == 'edps' %} active nav-link {% else %} nav-link {% endif %}">
+                        <i class="fas fa-chalkboard-teacher"></i> Todas EDA</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">EDA respondidas</a>
+                   
+                    <a class="{% if url_name == 'minhas_edps' %} active nav-link {% else %} nav-link {% endif %}" href="{% url 'edp:minhas_edps' %}"> <i class="fa fa-address-book"></i> Minhas EDA</a>
                 </li>
-                
-            </ul>
+                <li class="nav-item">
+                   
+                        <a class="" href="#"> <i class="fa fa-address-book"></i> Minhas EDA Respondidas</a>
+                    </li>
+                    
+            </ul>{% endwith %}
         </div>
     {% elif user.is_authenticated and user.eh_aluno %}
     <div class="row py-2 my-2">

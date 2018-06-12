@@ -1,15 +1,36 @@
 <!-- templates/home.html-->
 {% extends 'dashboard.html' %} 
 
-teste
+{% load bootstrap %}
 {% block title %} {{title}}{% endblock %}
-{% block content_dashboard %} 
+{%block breadcrumb%}  
 
-<div class="row">
+<li class="breadcrumb-item">
+                <a href="#">Estruturas Digital de Aprendizagem</a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">{{edp}}</a></li>
+            <li class="breadcrumb-item active">
+                    <a href="#">Visualizar</a>
+                </li>
+                {% endblock%}
+                
 
+{% block dashboard %} 
+{% comment %}
     <h3>
-        <a href="#">{{edp}}</a>
+        <strong>{{edp}}</strong>
     </h3>
+
+    <p>
+        <strong>Habilidades: </strong>
+        {% for h in edp.habilidades.all %}
+    <ul>
+        <li>{{h}}</li>
+    </ul>
+    {%endfor%}
+
+</p>
+<p>Nível: {{edp.nivel}}</p>
     <p>Objetivo :
         <strong> {{edp.objetivo_pedagogico}}</strong>
     </p>
@@ -19,7 +40,142 @@ teste
     <p>Metodologia :
         <strong>{{edp.metodologia}}</strong>
     </p>
+    <p>Recursos:
+
+        <strong>
+            <ul>
+              <li>{{recursos.texto}}</li>  
+              <li>{{recursos.video_embedded}}</li>          
+              {% if recursos.recebe_texto %}
+                <li>Visualizador de Texto</li> 
+              {% endif %}
+              {% if recursos.recebe_video_embedded %}
+              <li>Visualizador de Video Externo</li> 
+            {% endif %}
+
+            {% if recursos.recebe_video %}
+                <li>Visualizador de Video Interno</li> 
+              {% endif %}
+
+              {% if recursos.recebe_imagem %}
+                <li>Visualizador de Imagem</li> 
+              {% endif %}
+        </ul>
+        <video controls>
+            <source src={{recursos.video.url}}>
+        </video>
+    
+            {% load embed_video_tags %}
+
+            {% video  recursos.video_embedded as video %}
+            
+            {% video video "tiny" %}
+            
+             {% endvideo %}
+            
+
+        </strong>
+
+    </p>
+
+{% endcomment %}
 
 
-</div>
+<div class="row" style="border: 1px">
+        <div class="card border-primary mb-3">
+            <div class="card-header bg-primary"> Informações sobre a EDP</div>
+            <div class="card-body ">
+    
+    
+        
+        
+                    <p>
+                        <b>Nome:</b>{{edp}} </p>
+                    <p>
+                            <p>
+                                    <strong>Habilidades: </strong>
+                                    {% for h in edp.habilidades.all %}
+                                <ul>
+                                    <li>{{h}}</li>
+                                </ul>
+                                {%endfor%}
+                            
+                            </p>
+                            <p>Nível: {{edp.nivel}}</p>
+                        <b>Objetivo:</b>{{edp.objetivo_pedagogico}} </p>
+                    <p>
+                        <b>Atividades:</b>{{edp.atividades}} </p>
+               <p>
+                        <b>Metodologia:</b>{{edp.metodologia}} </p>
+                     </div>
+            </div>
+        
+            <div class="card border-success mb-3">
+        
+                <div class="card-header bg-success"> Recursos de Apresentação</div>
+                <div class="card-body text-success">
+                    {%if recursos.texto != '' %}
+                    <b> Texto:</b> {{recursos.texto}}
+                    {% endif %}
+                    <p></p>
+                   
+            {% load embed_video_tags %}
+
+            {% video  recursos.video_embedded as video %}
+            
+            {% video video "tiny" %}
+            
+             {% endvideo %}
+            
+                {% if recursos.video.url !=  '/media/videosenviados/videoplayback.mp4' %}
+                    <video controls>
+                            <source src={{recursos.video.url}}>
+                        </video>
+                  {% endif%}  
+                </div>
+            </div>
+            <div class="card border-dark mb-3">
+        
+                <div class="card-header bg-dark"> Recursos de Resposta</div>
+                <div class="card-body text-dark">
+        
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {% if recursos.recebe_texto == True %}
+                            {{form.texto | bootstrap}}
+                            {% endif%} 
+                            {% if recursos.recebe_video_embedded == True %} 
+                            {{form.video_embedded | bootstrap}}
+                            {% endif %}
+                            {% if recursos.recebe_video %}
+                            <p>
+                                    <a href="#" class="btn btn-success btn-larger">Gravar Video </a> 
+                            </p>  
+                       
+                          {% endif %}
+                            {{ form|bootstrap }}
+        
+                        </div>
+                        <div class="pull-right">
+        
+                            <a href="#" class="save btn btn-success" type="submit">Salvar Resposta</a>
+                            <a href="#" class="btn btn-danger" type="submit" value="Cancel" formnovalidate>Cancelar</a>
+        
+                        </div>
+
+                    </form>
+
+                  
+                        
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+
+                <a class='btn btn-larger btn-primary' href="{{request.META.HTTP_REFERER}}">Voltar</a>
+        </div>
+
+
+
 {% endblock %}

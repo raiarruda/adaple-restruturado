@@ -1,12 +1,18 @@
 <!-- templates/home.html-->
 {% extends 'dashboard.html' %} {% block title %} {{title}}{% endblock %} 
 
-{% block breadcrumb %}
+{%block breadcrumb%}  
 
-<li class="breadcrumb-item active">EDA</li>
-{% endblock%} {% block dashboard %}
+<li class="breadcrumb-item active">
+                <a href="#">Estruturas Digital de Aprendizagem</a>
+            </li>
+          
+                {% endblock%}
+                
+
+{% block dashboard %}
 {% if user.is_authenticated and user.eh_professor %}
-<a href="{% url 'edp:nova_edp' %}" class="btn btn-warning btn-lg ">Nova EDP</a>
+<a href="{% url 'edp:nova_edp' %}" class="btn btn-success btn-lg ">Nova EDA</a>
 {% endif %}
 <div style="padding: 10px;"></div>
 <div class="list-group">
@@ -14,19 +20,22 @@
 
     <a class="list-group-item list-group-item-action flex-column align-items-start ">
         <div class="d-flex w-100 justify-content-between">
-           <h3 class="mb-1"><strong>{{edp}}</strong></h3>
-            <small>{{edp.created_at}}</small>
+           <h3 class="mb-1"><strong>{{edp}} </strong></h3>
+            <small>{{edp.created_at |date:"SHORT_DATE_FORMAT"}} por <strong>{{edp.usuario}}</strong> </small>
+            
         </div>
         <p class="mb-1">
             <strong>Habilidades: </strong>
             {% for h in edp.habilidades.all %}
-        <ul>
-            <li>{{h}}</li>
+        <ul class="list-group">
+            <li class="ml-4">{{h}}</li>
         </ul>
         {%endfor%}
 
         </p>
-        
+        <p class="mb-1">
+            <strong>Nível: </strong> {{edp.nivel}}
+        </p>
                <p class="mb-1">
             <strong>Objetivo: </strong>{{edp.objetivo_pedagogico}}</p>
         <p class="mb-1">
@@ -35,18 +44,31 @@
             <strong>Metodo: </strong>{{edp.metodologia}}</p>
 
 
-        <small class="list-footer text-right">
-        <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Detalhes</a>
-            {% if user.is_authenticated and user.eh_professor %}
-            <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-info ">Adicionar Recursos</a>
+        <small class="list-footer text-right">  {% if user.is_authenticated and user.eh_professor %}
+
+
+         {% if edp.edps.count == 0 %}<a href="#" class="btn btn-danger ">EDA incompleta</a> {%else%}
+        <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Visualizar EDA</a>
+          {%endif%}
+        {% if edp.edps.count == 0 %} <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-warning ">Selecionar Recursos</a> 
+        {% else %}
+
+            <a href="#" class="btn btn-info ">Editar Recursos</a>
+            
+            {% endif %}
             {% elif user.is_authenticated and user.eh_aluno %}
             
-            <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-info ">Responder</a>
+            <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-info ">Responder EDA</a>
             {% endif %}
         </small>
     </a>
+<p>
 
+    
+</p>
     {% endfor %}
+
+
 </div>
 
 {% endblock %}

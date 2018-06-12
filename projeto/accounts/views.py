@@ -53,5 +53,9 @@ class CadastroView(TemplateView):
 def dashboard(request):
     title= 'Meu painel'
     template = 'dashboard.html'
+    usuario = request.user
 
-    return render(request, template, {'title': title})
+    if usuario.eh_professor:
+        return redirect('edp:edps')
+    else:
+        return render(request, template, {'title': title})

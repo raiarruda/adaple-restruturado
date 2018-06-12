@@ -8,18 +8,25 @@
 
 
     <video id="your-video-id" controls autoplay=""></video>
-<p>
-    <button id="iniciar" class="btn btn-primary" > Começar gravação </button>
-</p>
-    <p>
+<div class="form-horizontal">
 
-          <button class="btn btn-success" id="terminar" disabled>Terminar Gravação</button>
-    </p>
-
-  
+        <button id="iniciar" class="btn btn-small btn-danger" > Começar gravação </button>
 
 
+
+        <button class="btn btn-small btn-success" id="terminar" disabled>Terminar Gravação</button>
+   
+
+
+
+</div>
+    
     <script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
+<div class="p-2">
+
+        <a class='btn btn-larger btn-primary' href="{{request.META.HTTP_REFERER}}">Continuar adicionando recursos</a>
+</div>
+    
 
     {% block javascript%}
   

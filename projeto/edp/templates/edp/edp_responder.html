@@ -1,0 +1,115 @@
+
+<!-- templates/home.html-->
+{% extends 'dashboard.html' %} 
+{%block breadcrumb%}  
+
+<li class="breadcrumb-item">
+                <a href="#">Estruturas Digital de Aprendizagem</a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">{{edp}}</a></li>
+            <li class="breadcrumb-item active">
+                    <a href="#">Responder</a>
+                </li>
+                {% endblock%}
+                
+
+{% block title %} {{title}}{% endblock %}
+{% block dashboard %} 
+
+
+<div class="row" style="border: 1px">
+    <div class="panel panel-info">
+        <div class="panel-heading"> Informações sobre a EDP</div>
+        <div class="panel-body">
+
+
+
+            <h3>
+                <b>Nome:</b>{{edp}} </h3>
+            <p>
+                    <p>
+                            <strong>Habilidades: </strong>
+                            {% for h in edp.habilidades.all %}
+                        <ul>
+                            <li>{{h}}</li>
+                        </ul>
+                        {%endfor%}
+                    
+                    </p>
+                    <p>Nível: {{edp.nivel}}</p>
+                <b>Objetivo:</b>{{edp.objetivo_pedagogico}} </p>
+            <p>
+                <b>Atividades:</b>{{edp.atividades}} </p>
+       <p>
+                <b>Metodologia:</b>{{edp.metodologia}} </p>
+             </div>
+    </div>
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading"> Recursos de Apresentação</div>
+        <div class="panel-body">
+
+            <b> Texto:</b> {{recursos.texto}}
+
+            <p></p>
+            {% video recursos.video as my_video %}
+            {% if my_video == 'NONE' %} teste {% endif%}
+             <div>
+                <b>Vídeo:</b>
+                <br>{% video my_video 'tiny' %} </div>
+
+            {% endvideo %}
+
+            <video controls>
+                    <source src={{recursos.video.url}}>
+                </video>
+            
+        </div>
+    </div>
+    <div class="panel panel-success">
+
+        <div class="panel-heading"> Recursos de Resposta</div>
+        <div class="panel-body">
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% if recursos.recebe_texto == True %}
+                    {{form.texto | bootstrap}}
+                    {% endif%} 
+                    {% if recursos.recebe_video_embedded == True %} 
+                    {{form.video_embedded | bootstrap}}
+                    {% endif %}
+                    {% if recursos.recebe_video %}
+                    <p>
+                            <a href="#" class="btn btn-success btn-larger">Gravar Video </a> 
+                    </p>  
+               
+                  {% endif %}
+                    {{ form|bootstrap }}
+
+                </div>
+                <div class="pull-right">
+
+                    <button class="save btn btn-primary" type="submit">Salvar Resposta</button>
+                    <button class="btn btn-danger" type="submit" value="Cancel" formnovalidate>Cancelar</button>
+
+                </div>
+                <a href="#">
+                    <button class="btn btn-success">
+                        <span class="glyphicon glyphicon-home"></span> Início</button>
+                </a>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</div>
+</div>
