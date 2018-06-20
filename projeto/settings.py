@@ -46,6 +46,11 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrapform',
     'embed_video',
+    'django_wysiwyg',
+    'tinymce',
+    'ckeditor',
+    'django_filters',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +154,4 @@ LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+DJANGO_WYSIWYG_FLAVOR = "tinymce"    # or "tinymce_advanced"

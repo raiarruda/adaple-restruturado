@@ -4,7 +4,7 @@ from django.db import transaction
 from django.conf import settings
 from django.utils.text import slugify
 from embed_video.fields import EmbedVideoField
-
+from ckeditor.widgets import CKEditorWidget
 class form_edp(forms.ModelForm):
 
     titulo = forms.CharField(label='Título',  required=True)
@@ -58,7 +58,8 @@ class Edp_form(forms.ModelForm):
 class form_recursos_edp(forms.ModelForm):
  
     video_embedded = forms.CharField(label='Video Externo')
-    texto = forms.CharField(label='Texto',   widget=forms.Textarea)
+    texto = forms.CharField(label='Texto',   widget=CKEditorWidget())
+
 
 
     class Meta:

@@ -22,8 +22,7 @@
         <div class="d-flex w-100 justify-content-between">
            <h3 class="mb-1"><strong>{{edp}} </strong></h3>
             <small>{{edp.created_at |date:"SHORT_DATE_FORMAT"}} por <strong>{{edp.usuario}}</strong> </small>
-            
-        </div>
+            </div>
         <p class="mb-1">
             <strong>Habilidades: </strong>
             {% for h in edp.habilidades.all %}
@@ -43,23 +42,30 @@
         <p class="mb-1">
             <strong>Metodo: </strong>{{edp.metodologia}}</p>
 
+        <small class="list-footer text-right" >
+            
+            <a href="{% url 'edp:editar_edp' edp.slug %}" class="btn"><i class="fa fa-edit"></i></a>
+            <a href="{% url 'edp:deletar_edp' edp.slug %}" class="btn"><i class="fa fa-trash-alt "></i></a>
+     
+   
+            {% if user.is_authenticated and user.eh_professor %}
 
-        <small class="list-footer text-right">  {% if user.is_authenticated and user.eh_professor %}
 
-
-         {% if edp.edps.count == 0 %}<a href="#" class="btn btn-danger ">EDA incompleta</a> {%else%}
-        <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-primary ">Visualizar EDA</a>
-          {%endif%}
-        {% if edp.edps.count == 0 %} <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-warning ">Selecionar Recursos</a> 
-        {% else %}
+            {% if edp.edps.count == 0 %}<a href="#" class="btn btn-info "><i class="fa fa-eye-slash "></i></a> {%else%}
+            <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn"><i class="fa fa-eye "></i></a>
+            {%endif%}
+            {% if edp.edps.count == 0 %} <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-warning "><i class="fa fa-plus"></i></a> 
+            {% else %}
 
             <a href="#" class="btn btn-info ">Editar Recursos</a>
-            
+          
             {% endif %}
             {% elif user.is_authenticated and user.eh_aluno %}
             
             <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-info ">Responder EDA</a>
             {% endif %}
+            
+
         </small>
     </a>
 <p>
@@ -68,7 +74,22 @@
 </p>
     {% endfor %}
 
-
+   
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mymodal">
+                
+        <div class="modal fade js-create-book" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+           
+           Launch demo modal
+             </button>
 </div>
+
+<div class="modal fade" id="mymodal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+                
+
+          </div>
+        </div>
+      </div>
 
 {% endblock %}

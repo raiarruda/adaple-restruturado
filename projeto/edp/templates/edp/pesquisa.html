@@ -1,0 +1,69 @@
+<!-- templates/home.html-->
+{% extends 'dashboard.html' %}
+{%load staticfiles %} {% load bootstrap %} {% load crispy_forms_tags %} {% load widget_tweaks %} 
+{% block title %}{{title}}{% endblock %} 
+
+{%block breadcrumb%}
+
+<li class="breadcrumb-item">
+  <a href="#">Estruturas Digital de Aprendizagem</a>
+</li>
+<li class="breadcrumb-item active">
+  <a href="#">Pesquisa</a>
+</li>
+
+</li>{% endblock%} {% block dashboard %}
+<div class="card border-primary mb-3">
+    <div class="card-header bg-primary"> Pesquisar</div>
+    <div class="card-body ">
+        <form class="form-group" method="get">
+        <label for="{{edps_pesquisa.form.nivel.id_for_label}}">Nível</label>
+        {% render_field edps_pesquisa.form.nivel class="form-control" %} 
+        <label for="{{edps_pesquisa.form.usuario.id_for_label}}">Professor</label>
+        {% render_field edps_pesquisa.form.usuario class="form-control" %}  
+        <label for="{{edps_pesquisa.form.habilidades.id_for_label}}">Habilidades</label>
+        {% for f in edps_pesquisa.form.habilidades %}
+        <div class="form-check"> 
+           
+            {{f}}
+            
+      
+        </div>
+     {%endfor%}
+
+
+        </div>
+  <button class="btn btn-small " type="submit">
+    <i class="fas fa-search"></i>Pesquisar</button>
+</form>
+
+
+</div>
+
+<div class="card border-success mb-3">
+  <div class="card-header bg-success"> Resultados</div>
+  <div class="card-body ">
+
+
+    <ul>
+      {% for edp in edps_pesquisa.qs %}
+
+
+      <li>
+        <a href="{% url 'edp:detalhe_edp' edp.slug %}">{{ edp }}</a>
+
+      </li>
+      {% empty%}
+      <div class="alert alert-dark" role="alert">
+        Nenhuma Estrutura Digital de Aprendizagem encontrado com essa especificação
+      </div>
+      {% endfor %}
+
+
+    </ul>
+
+  </div>
+</div>
+
+
+{% endblock %}

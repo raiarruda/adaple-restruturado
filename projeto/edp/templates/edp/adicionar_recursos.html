@@ -1,6 +1,8 @@
 <!-- templates/home.html--> 
-{% extends 'dashboard.html' %}{%load staticfiles %} {% block title %}{{title}}{% endblock %}
+{% extends 'dashboard.html' %}{%load staticfiles %} {% load wysiwyg %}{% block title %}{{title}}{% endblock %}
 {% load bootstrap %}
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>tinymce.init({ selector:'textarea' });</script>
 
 {%block breadcrumb%}  
 
@@ -13,14 +15,17 @@
                 </li>
                 {% endblock%}
                 
-                {% block dashboard %}
+{% block dashboard %}
 
 
 <form method="post">
         {% csrf_token %}
- {% comment %}      {{ form | bootstrap }} {% endcomment %}
+ 
 
  <h4 class="font-monospace p-2">Recursos para o aprendiz visualizar</h2>
+        {% wysiwyg_setup %}
+        {% wysiwyg_editor "id_texto" %}
+
 
  {{form.texto | bootstrap}}
  {{form.video_embedded | bootstrap}}
