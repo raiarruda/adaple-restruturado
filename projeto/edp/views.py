@@ -12,13 +12,13 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import (Edp_form,  UploadFileForm, form_edp,
-                    form_recursos_edp, form_resposta_edp, form_turma, UploadFileFormResposta)
-from .models import Edp, Habilidade, Matricula, Turma, RecursosEdp
 from .filters import EdpFilter
+from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta, form_edp,
+                    form_recursos_edp, form_resposta_edp, form_turma)
+from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma
 
 User = get_user_model()
-#funcoes de listagem
+
 @login_required
 def edps(request):
     edps = Edp.objects.all()
@@ -34,9 +34,10 @@ def minhas_edps(request):
     recursos = RecursosEdp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
-    
-
-    return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+    if request.user.eh_professor==True:
+        return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+    else:
+        return redirect('edp:epds')
 
 @login_required
 def turmas (request):
@@ -100,6 +101,17 @@ def deletar_edp(request, slug):
         return redirect('edp:edps')
     return render(request, template, {'edp':edp})
 
+
+@login_required
+def deletar_edp(request, slug):
+    template = 'edp/deletar_edp.html'
+    edp = get_object_or_404(Edp, slug=slug)
+    if request.method == 'POST':
+        edp.delete()
+        return redirect('edp:edps')
+    return render(request, template, {'edp':edp})
+
+
 @login_required
 def nova_turma(request):
     template = 'edp/turma_nova.html'
@@ -143,6 +155,25 @@ def adicionar_recursos(request, slug):
     else:
         form = form_recursos_edp()
         return render( request, template, {'form':form, 'title':title, 'edp':edp})
+
+
+@login_required
+def editar_recursos(request,slug):
+    edp =  get_object_or_404(Edp, slug=slug)
+    recursos = get_object_or_404(RecursosEdp, edp=edp)
+
+    template = 'edp/adicionar_recursos.html'
+    title= 'Editar Recursos da EDA' + edp.titulo
+    if request.method == 'POST':
+        form = form_recursos_edp(request.POST, instance=recursos)
+        if form.is_valid():
+            form.save(request)
+            return tredirect('edp:edps')
+    else:
+        form = form_recursos_edp(instance=recursos)
+    return render( request, template, {'form':form, 'title':title, 'edp':edp})
+
+
 
 #funcoes de clicar
 @login_required
@@ -203,6 +234,29 @@ def salvar_video(request, slug):
             'uploaded_file_url': uploaded_file_url
         })
     return render(request, 'edp/camera.html')
+
+def editar_video(request, slug):
+    edp = get_object_or_404(Edp, slug=slug)
+    recursos = get_object_or_404( RecursosEdp, edp=edp)
+
+    if request.method == 'POST' and request.FILES['video_file']:
+        myfile = request.FILES['video_file']
+        form = UploadFileForm(request.POST, request.FILES)
+        fs = FileSystemStorage()
+        filename = fs.save('video/'+ myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+       
+        if form.is_valid():
+            recursos.video=uploaded_file_url
+            form.save(request)
+            return redirect('edp:edps')
+
+        return render(request, 'edp/listarEDA.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+    return render(request, 'edp/camera.html')
+
+
 
 @csrf_exempt
 def salvar_video_resposta(request, slug):

@@ -6,7 +6,7 @@
 {%block breadcrumb%}  
 
     <li class="breadcrumb-item">
-        <a href="#">Estruturas Digital de Aprendizagem</a>
+        <a href="{% url 'edp:edps'%}">Estruturas Digital de Aprendizagem</a>
     </li>
     <li class="breadcrumb-item">
         <a href="#">{{edp}}</a>
@@ -99,7 +99,7 @@
 
 <div class="p-2">
 
-<a class='btn btn-larger btn-primary' href="{{request.META.HTTP_REFERER}}">Voltar</a>
-</div>
+
+
 
 {% endblock %}

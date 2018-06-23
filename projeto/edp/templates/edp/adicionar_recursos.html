@@ -23,16 +23,18 @@
  
 
  <h4 class="font-monospace p-2">Recursos para o aprendiz visualizar</h2>
-        {% wysiwyg_setup %}
-        {% wysiwyg_editor "id_texto" %}
-
+    
 
  {{form.texto | bootstrap}}
  {{form.video_embedded | bootstrap}}
 
 <div>
      <p>
+                {% if url_name == 'editar_recursos' %}
+                <a href="{% url 'edp:ed_camera' edp.slug %}" class="btn btn-success btn-larger">Alterar Video </a> 
+                {% else %}
              <a href="{% url 'edp:camera' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
+             {% endif %}
      </p>  
 
 
@@ -42,6 +44,9 @@
 {{form.recebe_video | bootstrap}}
 
         <button class="btn btn-larger btn-primary"type="submit">Salvar Recursos</button>
+        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a>
+</div>
+
       </form>
     
   

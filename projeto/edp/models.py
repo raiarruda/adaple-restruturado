@@ -58,8 +58,8 @@ class Edp(models.Model):
 
     
     class Meta:
-        verbose_name = 'Estrutura Digital Pedagógica'
-        verbose_name_plural = 'Estruturas Digitais Pedagógicas'
+        verbose_name = 'Estrutura Digital de Aprendizagem'
+        verbose_name_plural = 'Estruturas Digital de Aprendizagem'
         ordering = ['created_at']
 
 class Turma(models.Model):
@@ -120,11 +120,25 @@ class RecursosEdp(models.Model):
     recebe_imagem = models.BooleanField('Responder com imagem ?', default=False)
     video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
 
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
     def __str__(self):
         return self.edp.titulo
     
     def iniciar(self):
         self.save()
+ 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('edp:detalhe_edp', (), {'slug': self.slug})
+
+    
+    class Meta:
+        verbose_name = 'Recurso Estrutura Digital de Aprendizagem'
+        verbose_name_plural = 'Recursos Estruturas  Digital de Aprendizagem'
+        ordering = ['created_at']
 
         
 class RespostaEdp(models.Model):
@@ -133,12 +147,24 @@ class RespostaEdp(models.Model):
     video_embedded = EmbedVideoField(blank=True, null=True)
     texto = models.TextField('Texto', blank=True)
     video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
-  
+    
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    def usuario(self):
+        return self.edp.usuario
+   
     def __str__(self):
         return self.edp.titulo
     
     def iniciar(self):
         self.save()
+
+    class Meta:
+        verbose_name = 'Resposta Estrutura Digital de Aprendizagem'
+        verbose_name_plural = 'Resposta Estrutura Digital de Aprendizagem'
+        ordering = ['edp']
 
 class db_video(models.Model):
     nome = models.CharField(max_length=20)

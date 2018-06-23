@@ -21,7 +21,7 @@
 
     {% if user.is_authenticated and user.eh_professor %}
     <div class="row py-2 my-2">
-        <div class="col-md-3"> {% with request.resolver_match.url_name as url_name %}
+        <div class="col-md-3 text-light bg-light"> {% with request.resolver_match.url_name as url_name %}
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a href="{% url 'edp:edps' %}" class="{% if url_name == 'edps' %} active nav-link {% else %} nav-link {% endif %}">
@@ -62,11 +62,13 @@
     {% endif %}
 
 
-    <div class="col">
+
+    <div class="w-25 p-3 col">
         {% block dashboard %} {% endblock %}
 
     </div>
 
+</div>
 </div>
 
 {% endblock %}

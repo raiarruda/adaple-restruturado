@@ -6,7 +6,8 @@
 <form method="post">
         {% csrf_token %}
         {{ form | bootstrap }}
-        <button class="btn btn-larger btn-primary" type="submit">Salvar EDA </button>
+        <button class="btn btn-larger btn-primary"  type="submit" >Salvar EDA </button>
+        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a>
       </form>
 
 
