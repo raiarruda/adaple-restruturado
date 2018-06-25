@@ -32,7 +32,7 @@
                     </ul>
                     {%endfor%}
                 </p>
-                <p><b>Nível:</b> {{edp.nivel}}</p>
+                <p><b>Nível:</b> {{edp.get_nivel_display}}</p>
                 <p> <b>Objetivo:</b>{{edp.objetivo_pedagogico}} </p>
                 <p><b>Atividades:</b>{{edp.atividades}} </p>
                 <p><b>Metodologia:</b>{{edp.metodologia}} </p>
@@ -88,7 +88,7 @@
                         </div>
                     <div class="pull-right">
 
-                    <a href="#" class="save btn btn-success" type="submit">Salvar Resposta</a>
+                    <a href="#" class="save btn btn-success" disabled disa type="submit">Salvar Resposta</a>
                     <a href="#" class="btn btn-danger" type="submit" value="Cancel" formnovalidate>Cancelar</a>
 
                     </div>
@@ -98,7 +98,8 @@
     </div>
 
 <div class="p-2">
-
+        <a class='btn btn-larger btn-warning' href="{{request.META.HTTP_REFERER}}">Voltar</a>
+</div>
 
 
 

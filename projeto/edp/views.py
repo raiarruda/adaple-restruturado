@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .filters import EdpFilter
 from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta, form_edp,
                     form_recursos_edp, form_resposta_edp, form_turma)
-from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma
+from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma, RespostaEdp
 
 User = get_user_model()
 
@@ -101,17 +101,6 @@ def deletar_edp(request, slug):
         return redirect('edp:edps')
     return render(request, template, {'edp':edp})
 
-
-@login_required
-def deletar_edp(request, slug):
-    template = 'edp/deletar_edp.html'
-    edp = get_object_or_404(Edp, slug=slug)
-    if request.method == 'POST':
-        edp.delete()
-        return redirect('edp:edps')
-    return render(request, template, {'edp':edp})
-
-
 @login_required
 def nova_turma(request):
     template = 'edp/turma_nova.html'
@@ -193,7 +182,7 @@ def nova_matricula(resquest, slug):
 def responder_edp(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
     recursos = get_object_or_404(RecursosEdp, edp=edp)
-    template = 'edp/responder_edp.html'
+    template = 'edp/edp_responder.html'
     title= 'Responder:- ' + edp.titulo
     
     if request.method == "POST":
@@ -211,6 +200,8 @@ def responder_edp(request, slug):
     else:
         form = form_resposta_edp()
         return render( request, template, {'form':form, 'title':title, 'edp':edp, 'recursos': recursos})
+
+
 
 @csrf_exempt
 def salvar_video(request, slug):
@@ -262,6 +253,7 @@ def editar_video(request, slug):
 def salvar_video_resposta(request, slug):
     template_name = 'edp/camera.html'
     edp = get_object_or_404(Edp, slug=slug)
+    resposta_edp = get_object_or_404(RespostaEdp, edp=edp)
    
     if request.method == 'POST' and request.FILES['video_file']:
         myfile = request.FILES['video_file']

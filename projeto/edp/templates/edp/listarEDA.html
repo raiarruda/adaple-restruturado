@@ -31,25 +31,21 @@
     {% for edp in edps%}
     <tbody>
       <tr>
-        <th scope="row">{{edp}}</th>
+        <th scope="row"><a href="{{edp.get_absolute_url}}">{{edp}}</a></th>
         <td>{% for h in edp.habilidades.all %}
             <ul class="list-group">
                 <li class="ml-4">{{h}}</li>
             </ul>
             {%endfor%}</td>
-        <td>{{edp.nivel}}</td>
+        <td>{{edp.get_nivel_display}}</td>
         <td>{{edp.created_at |date:"SHORT_DATE_FORMAT"}}</td>
         <td>{{edp.usuario}}</td>
         <td class="small"> 
 
             <small class="text-right" >
-            
+             {% if user.is_authenticated and user.eh_professor %}
                 <a href="{% url 'edp:editar_edp' edp.slug %}" class="btn btn-sm"><i class="fa fa-edit"></i> EDA</a>
                 <a href="{% url 'edp:deletar_edp' edp.slug %}" class="btn btn-sm"><i class="fa fa-trash-alt "></i> EDA</a>
-         
-       
-                {% if user.is_authenticated and user.eh_professor %}
-    
                     {% if edp.edps.count == 0 %}
                         <a href="#" class="btn btn-sm btn-info "><i class="fa fa-eye-slash "></i></a>
                     {%else%}
@@ -64,8 +60,18 @@
                     {% endif %}
     
                 {% elif user.is_authenticated and user.eh_aluno %}
+
                 
-                <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-sm btn-info ">Responder EDA</a>
+                {% if edp.edps.count == 0 %}
+                <a href="#" class="btn btn-sm btn-info "><i class="fa fa-eye-slash "></i></a>
+                
+                {%else%}
+                    <a href="{% url 'edp:detalhe_edp' edp.slug %}" class="btn btn-sm"><i class="fa fa-eye "></i></a>
+                    <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-sm btn-info ">Responder EDA</a>
+               {%endif%}
+
+                
+               
                 
                 {% endif %}
                 

@@ -58,7 +58,7 @@ class Edp_form(forms.ModelForm):
 class form_recursos_edp(forms.ModelForm):
  
     video_embedded = forms.CharField(label='Video Externo')
-    texto = forms.CharField(label='Texto',   widget=CKEditorWidget())
+    texto = forms.CharField(label='Texto',   widget=forms.TextInput)
 
 
 
@@ -84,8 +84,8 @@ class form_turma(forms.ModelForm):
 
 class form_resposta_edp(forms.ModelForm):
  
-    video_embedded = forms.CharField(label='Video Externo',  required=True)
-    texto = forms.CharField(label='Texto',  required=True, widget=forms.Textarea)
+    video_embedded = forms.CharField(label='Video Externo')
+    texto = forms.CharField(label='Texto', widget=forms.Textarea)
 
 
     class Meta:

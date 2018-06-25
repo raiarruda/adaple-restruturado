@@ -113,7 +113,7 @@ class RecursosEdp(models.Model):
    
     edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='edps', on_delete=models.CASCADE)
     video_embedded = EmbedVideoField(blank=True, null=True)
-    texto =  HTMLField('Texto') #models.TextField('Texto', blank=True)
+    texto =  models.TextField('Texto', blank=True)
     recebe_texto = models.BooleanField('Responder texto ?', default=False)
     recebe_video_embedded = models.BooleanField('Responder com videos do youtube?', default=False )
     recebe_video = models.BooleanField('Responder com video?', default=False)

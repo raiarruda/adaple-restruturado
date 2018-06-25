@@ -79,16 +79,15 @@
                             {% endif %}
                             {% if recursos.recebe_video %}
                                 <p>
-                                    <a href="#" class="btn btn-success btn-larger">Gravar Video </a> 
+                                    <a href="{% url 'edp:camera_resposta' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
                                 </p>  
 
                              {% endif %}
                             
-                             {{ form|bootstrap }}
                         </div>
                     <div class="pull-right">
 
-                    <a href="#" class="save btn btn-success" type="submit">Salvar Resposta</a>
+                    <button class="save btn btn-success" type="submit">Salvar Resposta</button>
                     <a href="#" class="btn btn-danger" href="{{request.META.HTTP_REFERER}}" formnovalidate>Cancelar</a>
 
                     </div>
