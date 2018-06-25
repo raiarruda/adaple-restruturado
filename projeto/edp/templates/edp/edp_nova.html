@@ -1,13 +1,30 @@
 <!-- templates/home.html-->
 {% extends 'dashboard.html' %}{% load crispy_forms_tags %} {% block title %} {{title}}{% endblock %} {% block dashboard %}
-{% load bootstrap %}
+{% load bootstrap %} {%load widget_tweaks  %}
 
 
 <form method="post">
         {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+      
+      {% for field in form.visible_fields %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field | add_class:'form-control'}}
+          {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% endfor %}
+        
+
+        ----
         {{ form | bootstrap }}
+        <div class="right"> 
         <button class="btn btn-larger btn-primary"  type="submit" >Salvar EDA </button>
-        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a>
+        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a></div>
       </form>
 
 
