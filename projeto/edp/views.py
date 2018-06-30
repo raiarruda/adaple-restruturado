@@ -152,8 +152,8 @@ def adicionar_recursos(request, slug):
                 recursos_edp.edp=edp
                 recursos_edp.save()
 
-               # return redirect(reverse(edp.get_absolute_url()))
-                return render( request, template, {'form':form, 'title':title, 'edp':edp})
+                return redirect('edp:edps')
+               # return render( request, template, {'form':form, 'title':title, 'edp':edp})
             else:
                 return redirect('edp:edps')
     else:
