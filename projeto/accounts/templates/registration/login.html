@@ -1,39 +1,33 @@
 <!-- templates/registration/login.html -->
 {% extends 'base.html' %} {%load static %} {%block title%} Entrar {%endblock%} {% block content %}
-<div class="text-center">
-    <h2>Login</h2>
-
-
-    <form action="." method="post" class="form-signin">
-            {% csrf_token %}
-            <hr />
-            <div class="form-group row">
-                <label for="id_username" class="col-md-2 control-label">Usuário</label>
-                <div class="col-md-10" >
-                    {{ form.username }}
-                </div>
+{%load bootstrap   %} {% load widget_tweaks %}
+<div style="max-width: 330px;" >
+<form method="post">
+        <legend>Entrar</legend>
+        {% csrf_token %}
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+      
+      {% for field in form.visible_fields %}
+        <div class="form-group row">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field | add_class:'form-control'}}
+          {% for error in field.errors %}
+            <span class="help-block text-danger">Senha ou usuário incorretos.</span>
+          {% endfor %}
+        </div>
+      {% endfor %}
+        
+      <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+              <button type="submit" class="btn btn-primary">Entrar</button>
+              <a class="btn btn-primary" href="{% url 'accounts:cadastro' %}"> Cadastrar</a>
+  
             </div>
-            <div class="form-group row">
-                <label for="id_password" class="col-md-2 control-label">Senha</label>
-                <div class="col-md-10">
-                    {{ form.password }}
-                </div>
-            </div>
-            <div class="align-middle">
-                
+  </div>
 
-                    <button type="submit" class="btn btn-success">Entrar</button>
-                    <a class="btn btn-primary" href="{% url 'accounts:cadastro' %}"> Cadastrar</a>
-
-                
-            </div>
-            {% if form.errors %}
-            <p class="validation-summary-errors">Senha ou usuário incorretos.</p>
-            {% endif %}
-        </form>
-
-
-
+    </form>
 
 </div>
 

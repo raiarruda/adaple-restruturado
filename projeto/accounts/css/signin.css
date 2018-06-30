@@ -8,7 +8,7 @@ body {
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
-}
+/* }
 .form-signin .checkbox {
   font-weight: 400;
 }
@@ -17,8 +17,7 @@ body {
   box-sizing: border-box;
   height: auto;
   padding: 10px;
-  font-size: 16px;
-}
+  font-size:
 .form-signin .form-control:focus {
   z-index: 2;
 }
@@ -33,18 +32,19 @@ body {
   border-top-right-radius: 0;
 }
 
-.sidebar-nav {
-  padding: 10px;
+.sidebar-nav { 16px;
+/* } */
+  /* padding: 10px;
 }
 .nav.nav-list a {
   padding: 5px 10px;
 }
-.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus {
-  background-color: #428BCA;
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus { */
+  /* background-color: #428BCA;
   color: #FFFFFF;
 }
 
 .nav-header {
   color: darkgrey;
   font-weight: bold;
-}
+} */ 

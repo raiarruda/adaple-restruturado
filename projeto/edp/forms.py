@@ -1,5 +1,5 @@
 from django import forms
-from .models import Edp, Habilidade, Turma, Matricula, RecursosEdp, RespostaEdp, db_video
+from .models import Edp, Habilidade, Turma, Matricula, RecursosEdp, RespostaEdp, Video
 from django.db import transaction
 from django.conf import settings
 from django.utils.text import slugify
@@ -57,42 +57,33 @@ class Edp_form(forms.ModelForm):
 
 class form_recursos_edp(forms.ModelForm):
  
-    video_embedded = forms.CharField(label='Video Externo')
-    texto = forms.CharField(label='Texto',   widget=forms.TextInput)
-
-
+    video_embedded = forms.CharField(label='Video Externo', required=False)
+    texto = forms.CharField(label='Texto',   widget=forms.Textarea, required=False)
 
     class Meta:
         model = RecursosEdp
 
         fields = ('video_embedded', 'texto', 'recebe_texto', 'recebe_video_embedded', 'recebe_video', 'recebe_imagem')
 
-class form_turma(forms.ModelForm):
-
-    start_date = forms.DateField(widget=forms.SelectDateWidget())
-    class Meta:
-        model = Turma
-
-        fields = ('nome', 'start_date',)
-
-# class form_matricula(forms.ModelForm):
-    # class Meta:
-    #     model = Matricula
-
-    #     fields= ('usuario', 'turma', 'status',)
 
 
 class form_resposta_edp(forms.ModelForm):
  
-    video_embedded = forms.CharField(label='Video Externo')
-    texto = forms.CharField(label='Texto', widget=forms.Textarea)
-
+    video_embedded = forms.CharField(label='Video Externo', required=False)
+    texto = forms.CharField(label='Texto', widget=forms.Textarea, required=False)
 
     class Meta:
         model = RespostaEdp
 
         fields = ('video_embedded', 'texto')
-
+        
+    # @transaction.atomic
+    # def save(self):
+    #     resposta = super().save(commit=False)
+    #     resposta.usuario = request.user
+    #     resposta.save()
+    #     video = Video.objects.create(resposta=resposta)
+    #     return resposta
 
 class UploadFileForm(forms.ModelForm): 
    
@@ -107,4 +98,20 @@ class UploadFileFormResposta(forms.ModelForm):
     class Meta:
         model = RecursosEdp
         fields = ['video', ]
+
+
+class video_form_resposta(forms.ModelForm):
+    video = forms.FileField()
+
+    class Meta:
+        model = Video
+        fields = ['video',]
+
+class form_turma(forms.ModelForm):
+
+    start_date = forms.DateField(widget=forms.SelectDateWidget())
+    class Meta:
+        model = Turma
+
+        fields = ('nome', 'start_date',)
 

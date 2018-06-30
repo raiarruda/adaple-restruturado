@@ -1,0 +1,32 @@
+<!-- templates/home.html-->
+{% extends 'dashboard.html' %} 
+
+{% load bootstrap %} {% load wysiwyg %}
+{% block title %} {{title}}{% endblock %}
+{%block breadcrumb%}  
+
+    <li class="breadcrumb-item">
+        <a href="{% url 'edp:edps'%}">Estruturas Digital de Aprendizagem</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="#">{{edp}}</a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="#">Deletar</a>
+    </li>
+{% endblock%}
+                
+
+{% block dashboard %} 
+
+        <form method="post">{% csrf_token %}
+                Tem certeza que deseja deletar "{{ edp }}" ?
+
+
+                <div class="p-2"> 
+                    <input class='btn btn-larger btn-danger'type="submit" value="Deletar" />
+                        <a class='btn btn-larger btn-primary' href="{{request.META.HTTP_REFERER}}">Voltar</a>
+                </div>
+               
+            </form>
+{%endblock%}

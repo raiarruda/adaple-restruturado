@@ -51,9 +51,15 @@
                         <i class="fa fa-home fa-home"></i>&nbsp;Todas EDA</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Minhas EDA</a>
+                        <a href="{% url 'edp:pesquisa' %}" class="{% if url_name == 'pesquisa' %} active nav-link {% else %} nav-link {% endif %}">
+                            <i class="fas fa-search"></i> Pesquisar EDA</a>
+                    </li></li>
+    
+                <li class="nav-item">
+                        <a class="{% if url_name == 'respondidas' %} active nav-link {% else %} nav-link {% endif %}" href="{% url 'edp:respondidas' %}"> <i class="fa fa-address-book"></i> Minhas EDA</a>
+
                 </li>
-                
+                <hr />
             </ul>
         </div>
 

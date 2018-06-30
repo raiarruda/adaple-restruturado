@@ -29,14 +29,7 @@
  {{form.video_embedded | bootstrap}}
 
 <div>
-     <p>
-                {% if url_name == 'editar_recursos' %}
-                <a href="{% url 'edp:ed_camera' edp.slug %}" class="btn btn-success btn-larger">Alterar Video </a> 
-                {% else %}
-             <a href="{% url 'edp:camera' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
-             {% endif %}
-     </p>  
-
+    
 
 <h4 class="font-monospace p-2">Recursos para o aprendiz usar</h2>
 {{form.recebe_texto | bootstrap}}
@@ -48,6 +41,18 @@
 </div>
 
       </form>
+
+      <p>
+        {% if url_name == 'editar_recursos' %}
+        <a href="{% url 'edp:ed_camera' edp.slug %}" class="btn btn-success btn-larger">Alterar Video </a> 
+        {% else %}
+
+       <p>Observação, para gravar um video antes é necessário salvar os recursos anteriores
+       </p> 
+     <a href="{% url 'edp:camera' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
+     {% endif %}
+</p>  
+
     
   
 {% comment %}{% endcomment%}

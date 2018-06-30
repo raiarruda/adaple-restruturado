@@ -56,6 +56,6 @@ def dashboard(request):
     usuario = request.user
 
     if usuario.eh_professor:
-        return redirect('edp:edps')
+        return redirect('edp:minhas_edps')
     else:
         return render(request, template, {'title': title})

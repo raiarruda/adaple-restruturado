@@ -11,10 +11,10 @@ from django.shortcuts import (get_object_or_404, redirect, render,
 from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
-
+from django.http import Http404
 from .filters import EdpFilter
 from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta, form_edp,
-                    form_recursos_edp, form_resposta_edp, form_turma)
+                    form_recursos_edp, form_resposta_edp, form_turma, video_form_resposta)
 from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma, RespostaEdp
 
 User = get_user_model()
@@ -28,6 +28,8 @@ def edps(request):
 
     return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
 
+ 
+
 @login_required
 def minhas_edps(request):
     edps = request.user.edps.all()
@@ -35,6 +37,18 @@ def minhas_edps(request):
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
     if request.user.eh_professor==True:
+        return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+    else:
+        return redirect('edp:epds')
+
+@login_required
+def minhas_edps_aluno(request):
+    edps = request.user.edps.all()
+    recursos = RecursosEdp.objects.all()
+   
+    title = 'Estruturas Digitais Pedagogicas'
+    template = 'edp/listarEDA.html'
+    if request.user.eh_aluno==True:
         return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
     else:
         return redirect('edp:epds')
@@ -80,6 +94,7 @@ def nova_edp(request):
 @login_required
 def editar_edp(request,slug):
     edp =  get_object_or_404(Edp, slug=slug)
+   
     template = 'edp/edp_nova.html'
     title= 'Editar EDA' + edp.titulo
     if request.method == 'POST':
@@ -94,7 +109,7 @@ def editar_edp(request,slug):
 
 @login_required
 def deletar_edp(request, slug):
-    template = 'edp/deletar_edp.html'
+    template = 'edp/edp_deletar.html'
     edp = get_object_or_404(Edp, slug=slug)
     if request.method == 'POST':
         edp.delete()
@@ -127,7 +142,7 @@ def nova_turma(request):
 def adicionar_recursos(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
     template = 'edp/adicionar_recursos.html'
-    title= 'Adicionar Recursos a EDP - ' + edp.titulo
+    title= 'Adicionar Recursos a EDA - ' + edp.titulo
     
     if request.method == "POST":
             form = form_recursos_edp(request.POST)
@@ -138,7 +153,7 @@ def adicionar_recursos(request, slug):
                 recursos_edp.save()
 
                # return redirect(reverse(edp.get_absolute_url()))
-                return redirect('edp:edps')
+                return render( request, template, {'form':form, 'title':title, 'edp':edp})
             else:
                 return redirect('edp:edps')
     else:
@@ -183,30 +198,73 @@ def responder_edp(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
     recursos = get_object_or_404(RecursosEdp, edp=edp)
     template = 'edp/edp_responder.html'
-    title= 'Responder:- ' + edp.titulo
+    title= 'Responder EDA: ' + edp.titulo
     
-    if request.method == "POST":
-            form = form_resposta_edp(request.POST)
-            if form.is_valid():
 
-                resposta_edp = form.save(commit=False)
-                resposta_edp.edp=edp
-                resposta_edp.save()
+    if request.method == 'POST' and request.FILES['video_file']:
+        print ("entrou no files")
+        myfile = request.FILES['video_file']
+        form = UploadFileForm(request.POST, request.FILES)
+        fs = FileSystemStorage()
+        filename = fs.save('video/'+ myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        if form.is_valid():
+            resposta_edp = form.save(commit=False)
+            resposta_edp.edp = epd
+            resposta_edp.video = uploaded_file_url
+            resposta_edp.save()
+        return render(request, 'edp/responder_edp.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
 
-               # return redirect(reverse(edp.get_absolute_url()))
-                return redirect('edp:edps')
-            else:
-                return redirect('edp:edps')
+
+    elif request.method == "POST":
+        print ("\n \n\ \n\ \nnãoooooo entrou no files")
+        form = form_resposta_edp(request.POST)
+        if form.is_valid():
+
+            resposta_edp = form.save(commit=False)
+            resposta_edp.edp=edp
+            resposta_edp.save()
+
+            #return redirect(reverse(edp.get_absolute_url()))
+        return redirect('edp:edps')
+
+    
     else:
         form = form_resposta_edp()
         return render( request, template, {'form':form, 'title':title, 'edp':edp, 'recursos': recursos})
 
 
 
+@login_required
+# def salvar_video_resposta(request, pk):
+#      resposta = get_object_or_404(Edp, slug=slug)
+#     if request.method == 'POST' and request.FILES['video_file']:
+#         myfile = request.FILES['video_file']
+#         form = UploadFileFormResposta(request.POST, request.FILES)
+#         fs = FileSystemStorage()
+#         filename = fs.save('video/'+ myfile.name, myfile)
+#         uploaded_file_url = fs.url(filename)
+       
+#         if form.is_valid():
+
+#             resposta_edp.video=uploaded_file_url
+#             resposta_edp.save()
+
+#         return render(request, 'edp/responder_edp.html', {
+#             'uploaded_file_url': uploaded_file_url
+#         })
+#     return render(request, template_name)
+
+
+
+
+
 @csrf_exempt
 def salvar_video(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
-   
+    recursos =  get_object_or_404(RecursosEdp, edp=edp)
     if request.method == 'POST' and request.FILES['video_file']:
         myfile = request.FILES['video_file']
         form = UploadFileForm(request.POST, request.FILES)
@@ -216,10 +274,12 @@ def salvar_video(request, slug):
        
         if form.is_valid():
 
-            recursos_edp = form.save(commit=False)
-            recursos_edp.edp=edp
-            recursos_edp.video=uploaded_file_url
-            recursos_edp.save()
+          #  recursos_edp = form.save(commit=False)
+           # recursos_edp.edp=edp
+         #   recursos_edp.video=uploaded_file_url
+          
+            recursos.video= uploaded_file_url
+            #recursos_edp.save()
 
         return render(request, 'edp/listarEDA.html', {
             'uploaded_file_url': uploaded_file_url
@@ -248,31 +308,6 @@ def editar_video(request, slug):
     return render(request, 'edp/camera.html')
 
 
-
-@csrf_exempt
-def salvar_video_resposta(request, slug):
-    template_name = 'edp/camera.html'
-    edp = get_object_or_404(Edp, slug=slug)
-    resposta_edp = get_object_or_404(RespostaEdp, edp=edp)
-   
-    if request.method == 'POST' and request.FILES['video_file']:
-        myfile = request.FILES['video_file']
-        form = UploadFileFormResposta(request.POST, request.FILES)
-        fs = FileSystemStorage()
-        filename = fs.save('video/'+ myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-       
-        if form.is_valid():
-
-            resposta_edp = form.save(commit=False)
-            resposta_edp.edp=edp
-            resposta_edp.video=uploaded_file_url
-            resposta_edp.save()
-
-        return render(request, 'edp/responder_edp.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-    return render(request, template_name)
 
 @login_required
 def pesquisaEdp(request):

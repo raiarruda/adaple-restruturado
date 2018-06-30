@@ -20,8 +20,9 @@
 {% block dashboard %} 
 
 
+
     <div class="card border-primary mb-3">
-        <div class="card-header bg-primary"> Informações sobre a EDP</div>
+        <div class="card-header bg-primary"> Informações sobre a EDA</div>
             <div class="card-body ">
                 <p> <b>Nome:</b>{{edp}} </p>
                 <p>
@@ -46,20 +47,31 @@
                 {%if recursos.texto != '' %}
                     <b> Texto:</b> {{recursos.texto}}
                 {% endif %}
-                
+                         
+                    
                 {% load embed_video_tags %}
 
-                    {% video  recursos.video_embedded as video %}
 
-                    {% video video "tiny" %}
+                {% video  recursos.video_embedded as video %}
+
+                <div class="row embed-responsive embed-responsive-16by9"> 
+                        <iframe class= "embed-responsive-item"
+                        src="{{video.url}}">
+                        </iframe>
+                        </div>
+                        
 
                 {% endvideo %}
-
-                {% if recursos.video.url !=  '/media/videosenviados/videoplayback.mp4' %}
-                    <video controls>
+            
+                {% if recursos.video.url !=  '/media/none.mp4'  %}
+                
+                <div class="row embed-responsive embed-responsive-16by9">
+                    Video:
+                    <video class= "embed-responsive-item" controls allowfullscreen>
                         <source src={{recursos.video.url}}>
                     </video>
-                {% endif%}  
+                </div>
+                {% endif%} 
             </div>
     </div>
 
@@ -84,7 +96,7 @@
 
                              {% endif %}
                             
-                             {{ form|bootstrap }}
+                            
                         </div>
                     <div class="pull-right">
 

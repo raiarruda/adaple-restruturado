@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.edps, name='edps'),
     
     path('minhas', views.minhas_edps, name='minhas_edps'),
+    path('respondidas', views.minhas_edps_aluno, name='respondidas'),
     path('detalhes/<slug:slug>', views.detalhe_edp, name= 'detalhe_edp'),
     
     path('nova/edp', views.nova_edp, name= "nova_edp"),
@@ -30,5 +31,5 @@ urlpatterns = [
 
     path('camera/<slug:slug>', views.salvar_video, name="camera"),
     path('camera_ed/<slug:slug>', views.editar_video, name="ed_camera"),
-    path('camera2/<slug:slug>', views.salvar_video_resposta, name="camera_resposta"),
+    # path('camera2/<slug:slug>', views.salvar_video_resposta, name="camera_resposta"),
 ]

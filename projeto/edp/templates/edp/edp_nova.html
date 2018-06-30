@@ -20,11 +20,10 @@
       {% endfor %}
         
 
-        ----
-        {{ form | bootstrap }}
-        <div class="right"> 
+        
+        <div class="text-right"> 
         <button class="btn btn-larger btn-primary"  type="submit" >Salvar EDA </button>
-        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a></div>
+        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancelar</a></div>
       </form>
 
 
