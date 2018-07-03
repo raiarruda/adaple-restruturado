@@ -4,57 +4,149 @@
 {% block title %}{{title}}{% endblock %} 
 
 {% block dashboard %}
-<div class="card border-primary mb-3">
-    <div class="card-header bg-primary"> Pesquisar</div>
-    <div class="card-body ">
-        <form class="form-group" method="get">
-        <label for="{{edps_pesquisa.form.nivel.id_for_label}}">Nível</label>
-        {% render_field edps_pesquisa.form.nivel class="form-control" %} 
-        <label for="{{edps_pesquisa.form.usuario.id_for_label}}">Professor</label>
-        {% render_field edps_pesquisa.form.usuario class="form-control" %}  
-        <label for="{{edps_pesquisa.form.habilidades.id_for_label}}">Habilidades</label>
-        {% for f in edps_pesquisa.form.habilidades %}
-        <div class="form-check"> 
-           
-            {{f}}
-            
-      
-        </div>
-     {%endfor%}
 
-
-        </div>
-  <button class="btn btn-small " type="submit">
-    <i class="fas fa-search"></i>Pesquisar</button>
-</form>
-
-
-</div>
-
-<div class="card border-success mb-3">
-  <div class="card-header bg-success"> Resultados</div>
-  <div class="card-body ">
-
-
-    <ul>
-      {% for edp in edps_pesquisa.qs %}
-
-
-      <li>
-        <a href="{% url 'edp:detalhe_edp' edp.slug %}">{{ edp }}</a>
-
-      </li>
-      {% empty%}
-      <div class="alert alert-dark" role="alert">
-        Nenhuma Estrutura Digital de Aprendizagem encontrado com essa especificação
-      </div>
-      {% endfor %}
-
-
-    </ul>
-
+<div class="row">
+  <div class="col-lg-12">
+        
+        <h1 class="page-header"> Pesquisa</h1>
   </div>
+  <!-- /.col-lg-12 -->
 </div>
 
+<div class=" row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Pesquisa Avançada 
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+
+
+          <form class="form-group" method="get">
+            <label for="{{edps_pesquisa.form.nivel.id_for_label}}">Nível</label>
+            {% render_field edps_pesquisa.form.nivel class="form-control" %} 
+            <label for="{{edps_pesquisa.form.usuario.id_for_label}}">Professor</label>
+            {% render_field edps_pesquisa.form.usuario class="form-control" %}  
+            <label for="{{edps_pesquisa.form.habilidades.id_for_label}}">Habilidades</label>
+            {% for f in edps_pesquisa.form.habilidades %}
+            <div class="form-check"> 
+              
+                {{f}}
+                
+          
+            </div>
+          {%endfor%}
+          
+          
+          
+          <button class="btn btn-small " type="submit">
+          <i class="fa-search "></i>Pesquisar</button>
+          </form>
+
+<!-- ./panel-body -->
+        </div>
+<!-- ./pane -->
+    </div> 
+  <!-- ./col -->
+  </div>
+<!-- ./row -->
+</div>
+
+
+<div class=" row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Resultados </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <table class="table table-hover table-stripped table-responsive-sm table-sm">
+          <thead>
+            <tr>
+              <th scope="col table-bordered">Título</th>
+              <th scope="col">Habilidades</th>
+              <th scope="col">Nível</th>
+              <th scope="col">Data</th>
+              <th scope="col">Professor(a)</th>
+              <th scope="col">
+                <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr>
+              </th>
+              <th scope="col"></th>
+
+            </tr>
+          </thead>
+
+          <tbody>
+		   {% for edp in edps_pesquisa.qs %}
+		   <tr class="odd gradeX">
+			<td>
+				{% if user.eh_professor %}
+				<a {% if edp.recursos.count  %} href="{{edp.get_absolute_url}}" {%endif%}>{{edp}}</a>
+				{% else %}
+				<a {% if edp.recursos.count %} href="{% url 'edp:responder_edp' edp.slug %}" {%endif%}>{{edp}}</a>
+				{% endif %}
+			</td>
+			<td>
+
+				<ul>
+					{% for h in edp.habilidades.all %}
+					<li class="ml-4">{{h}}</li>
+					{%endfor%}
+				</ul>
+
+
+			</td>
+			<td>{{edp.get_nivel_display}}</td>
+			<td class="center">{{edp.usuario}}</td>
+			<td class="center">{{edp.created_at |date:"d/m/Y"}}</td>
+				   
+      <td> 
+
+          <small class="text-right" >
+           {% if user.is_authenticated and user.eh_professor %}
+              <a href="{% url 'edp:editar_edp' edp.slug %}" class="sm"><i class="fa fa-edit"></i> </a>
+              <a href="{% url 'edp:deletar_edp' edp.slug %}" class="sm"><i class="fa fa-trash-alt "></i> </a>
+
+
+          </td>
+          <td>
+              {% if edp.recursos.count != 0 %}
+                  <a href="#" class="btn btn-sm btn-info "><i class="fa fa-edit"></i> Recursos</a>   
+              {% else %}
+                  <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-sm btn-warning "><i class="fa fa-plus"></i> Recursos</a> 
+              {% endif %}
+  
+              {% elif user.is_authenticated and user.eh_aluno %}
+
+              
+              
+              {% if  edp.recursos.count != 0 %}
+              <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-sm btn-info ">Responder <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr></a>
+             {%endif%}
+
+              
+             
+              
+              {% endif %}
+              
+  
+          </small>
+          
+      </td> 
+        {% empty%}
+        <div class="alert alert-dark" role="alert">
+          Nenhuma Estrutura Digital de Aprendizagem encontrado com essa especificação
+        </div>
+        {% endfor %}
+
+        <!-- ./panel-body -->
+      </div>
+      <!-- ./pane -->
+    </div>
+    <!-- ./col -->
+  </div>
+  <!-- ./row -->
+</div>
 
 {% endblock %}

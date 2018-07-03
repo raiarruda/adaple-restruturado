@@ -16,11 +16,12 @@ from .filters import EdpFilter
 from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta,
                     form_recursos_edp, form_resposta_edp, form_turma, video_form_resposta)
 from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma, RespostaEdp
-
+from .decorators import student_required, teacher_required
 User = get_user_model()
 
 @login_required
 def edps(request):
+    
     edps = Edp.objects.all()
     recursos = RecursosEdp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
@@ -62,7 +63,8 @@ def turmas (request):
     return render(request, template, {'title': title, 'turmas': turmas})
 
 #funcoes de detalhes 
-@login_required
+# @login_required
+@teacher_required
 def detalhe_edp(request, slug):
    
     edp = get_object_or_404(Edp, slug=slug)
@@ -82,10 +84,10 @@ def nova_edp(request):
         if form.is_valid():
             
             edp = form.save(request)
-            edp.slug = slugify(edp.titulo)
-            edp.save()
 
-        edp.slug = slugify(edp.titulo)
+            edp.slug = slugify(edp.titulo)+"-"+str(edp.pk)
+            edp.save()
+    
         return redirect('edp:edps')
     else:
         form = Edp_form()

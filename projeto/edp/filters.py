@@ -7,6 +7,7 @@ User = get_user_model()
 
 
 class EdpFilter(django_filters.FilterSet):
+    titulo = django_filters.CharFilter(lookup_expr=['contains'])
     habilidades = django_filters.ModelMultipleChoiceFilter(queryset= Habilidade.objects.all(),  widget=forms.CheckboxSelectMultiple)
     usuario = django_filters.ModelChoiceFilter(queryset=User.objects.filter(eh_professor=True))
     class Meta:
