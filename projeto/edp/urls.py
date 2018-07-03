@@ -22,7 +22,6 @@ urlpatterns = [
     path('editar/edp/recursos/<slug:slug>', views.editar_recursos, name='editar_recursos'),
     
     path('deletar/edp/<slug:slug>', views.deletar_edp, name= "deletar_edp"),
-#TODO    path('deletar/edp/<slug:slug>', views.deletar_edp, name= "deletar_edp"),  
     
     path('responder/<slug:slug>', views.responder_edp, name="responder_edp"),
     path('turmas', views.turmas, name= "turmas"),

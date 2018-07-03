@@ -1,20 +1,9 @@
 <!-- templates/home.html-->
-{% extends 'dashboard.html' %} 
+{% extends 'base.html' %} 
 
 {% load bootstrap %} {% load wysiwyg %}
 {% block title %} {{title}}{% endblock %}
-{%block breadcrumb%}  
 
-    <li class="breadcrumb-item">
-        <a href="{% url 'edp:edps'%}">Estruturas Digital de Aprendizagem</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">{{edp}}</a>
-    </li>
-    <li class="breadcrumb-item active">
-        <a href="#">Visualizar</a>
-    </li>
-{% endblock%}
                 
 
 {% block dashboard %} 
@@ -99,10 +88,11 @@
                             
                         </div>
                     <div class="pull-right">
-
-                    <a href="#" class="save btn btn-success" disabled disa type="submit">Salvar Resposta</a>
-                    <a href="#" class="btn btn-danger" type="submit" value="Cancel" formnovalidate>Cancelar</a>
-
+                            <div class="tooltip-demo"> 
+                                <!-- TODO:tip não funciona tb -->
+                                <button class="btn btn-success"  data-toggle="tooltip" data-placement="top" title="Essa página é apenas uma demonstração, por isso, não pode salvar">Salvar Resposta</button>
+                    <button class="btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Essa página é apenas uma demonstração, por isso, não pode salvar">Cancelar</button>
+                                    </div>
                     </div>
 
                 </form>
@@ -116,3 +106,13 @@
 
 
 {% endblock %}
+<script>
+        // tooltip demo
+        $('.tooltip-demo').tooltip({
+            selector: "[data-toggle=tooltip]",
+            container: "body"
+        })
+        // popover demo
+        $("[data-toggle=popover]")
+            .popover()
+        </script>

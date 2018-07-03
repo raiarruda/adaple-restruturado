@@ -1,60 +1,111 @@
-<!-- templates/home.html--> 
-{% extends 'dashboard.html' %}{%load staticfiles %} {% load wysiwyg %}{% block title %}{{title}}{% endblock %}
-{% load bootstrap %}
+<!-- templates/home.html-->
+{% extends 'base.html' %}{%load staticfiles %} {% load wysiwyg %}{% block title %}{{title}}{% endblock %}
+{%load widget_tweaks  %}
 <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
-
-{%block breadcrumb%}  
-
-<li class="breadcrumb-item">
-                <a href="#">Estruturas Digital de Aprendizagem</a>
-            </li>
-            <li class="breadcrumb-item"><a href="#">{{edp}}</a></li>
-            <li class="breadcrumb-item active">
-                    <a href="#">Adicionar Recursos</a>
-                </li>
-                {% endblock%}
-                
-{% block dashboard %}
-
+<script>tinymce.init({ selector: 'textarea' });</script> {% block dashboard %}
+<div class="row">
+	<div class="col-sm-12">
+		<h1 class="page-header">Recursos para <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr>: {{edp}}</h1>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
 
 <form method="post">
-        {% csrf_token %}
- 
+	{% csrf_token %}
 
- <h4 class="font-monospace p-2">Recursos para o aprendiz visualizar</h2>
-    
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					Recursos para o aprendiz visualizar
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12">
 
- {{form.texto | bootstrap}}
- {{form.video_embedded | bootstrap}}
+						<div class="form-group">
+							<label for="{{ form.video_embedded.id_for_label }}">{{ form.video_embedded.label }}</label>
+							{{ form.video_embedded | add_class:'form-control'}} 
+						</div>
 
-<div>
-    
+						<div class="form-group">
+							<label for="{{ form.texto.id_for_label }}">{{ form.texto.label }}</label>
+							{{ form.texto | add_class:'form-control'}} 
+						</div>
+						<p>Observação, para gravar um video antes é necessário salvar os recursos anteriores
+						</p>
+						<a href="{% url 'edp:camera' edp.slug %}" class="btn btn-outline btn-primary btn-lg disabled">Gravar Video </a>
 
-<h4 class="font-monospace p-2">Recursos para o aprendiz usar</h2>
-{{form.recebe_texto | bootstrap}}
-{{form.recebe_video_embedded | bootstrap}}
-{{form.recebe_video | bootstrap}}
+					</div>
+						<!--/.col-sm-12  -->
+					</div>
+						<!-- /.row (nested) -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<!-- /.row -->
 
-        <button class="btn btn-larger btn-primary"type="submit">Salvar Recursos</button>
-        <a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a>
-</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-warning">
+					<div class="panel-heading">
+					Recursos para o aprendiz usar
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12">
+								
+								
+								
+									<div class="form-group">
+											<div class="checkbox">
+												
+												<label  for="{{ form.recebe_texto.id_for_label }}">
+														{{form.recebe_texto}}
 
-      </form>
+													{{form.recebe_texto.label}}</label>	
+											</div>
+					
+											<div class="checkbox">
+												
+												<label  for="{{ form.recebe_video_embedded.id_for_label }}">
+														{{form.recebe_video_embedded}}
 
-      <p>
-        {% if url_name == 'editar_recursos' %}
-        <a href="{% url 'edp:ed_camera' edp.slug %}" class="btn btn-success btn-larger">Alterar Video </a> 
-        {% else %}
+													{{form.recebe_video_embedded.label}}</label>	
+											</div>
+					
+											<div class="checkbox">
+													
+												<label  for="{{ form.recebe_video.id_for_label }}">
+														{{form.recebe_video}}
+													{{form.recebe_video.label}}</label>	
+											</div>
+										</div>
+			
 
-       <p>Observação, para gravar um video antes é necessário salvar os recursos anteriores
-       </p> 
-     <a href="{% url 'edp:camera' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
-     {% endif %}
-</p>  
+							
+						</div>
+					</div>
 
-    
-  
-{% comment %}{% endcomment%}
+						<!-- /.row (nested) -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<!-- /.row -->
+
+		<button class="btn btn-larger btn-success " type="submit">Salvar Recursos</button>
+		<a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a>
+
+		</div>
+</form>
 
 {% endblock %}

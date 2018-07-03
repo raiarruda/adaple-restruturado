@@ -21,7 +21,7 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'), #TODO:  tirar esse home, pois desnecessario
     path('admin/', admin.site.urls),
     path('accounts/', include('projeto.accounts.urls', namespace='accounts')),
     path('edps/', include('projeto.edp.urls', namespace='edp')),

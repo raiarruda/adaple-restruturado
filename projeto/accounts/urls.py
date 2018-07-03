@@ -11,7 +11,6 @@ app_name='accounts'
 urlpatterns = [
  #não existe mais mas não tenho coragem de deletar ainda   path('signup/', views.SignUp.as_view(), name='signup'), 
     path('', auth_views.LoginView.as_view(), name='login'),
-    path('dashboard/', views.dashboard, name='dashboard'),
     path('cadastro/', views.CadastroView.as_view(), name='cadastro'), 
     path('cadastro/aluno/', views.CadastroAlunoView.as_view(), name='cadastro_aluno'),
     path('cadastro/professor/', views.CadastroProfessorView.as_view(), name='cadastro_professor'),

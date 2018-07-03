@@ -1,5 +1,5 @@
-<!-- templates/home.html-->
-{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %} 
+<!-- TODO: #tag o que fazer com isso????????????????????????????-->
+{% extends 'base.html' %} {% block title %}Home{% endblock %} {% block dashboard %} 
 
 <h1>Seja Bem Vindo ao Ambiente Digital de Aprendizagem de Línguas!!!</h1>
 
@@ -9,8 +9,8 @@
 <p>Você é professor</p>
 
 
-<a href="{% url 'edp:edps' %}">Lista de todas as EDA</a>
-<a href="{% url 'edp:minhas_edps' %}">Lista de EDA de sua autoria</a>
+<a href="{% url 'edp:edps' %}">Lista de todas as <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr></a>
+<a href="{% url 'edp:minhas_edps' %}">Lista de <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr> de sua autoria</a>
 {% elif user.is_authenticated and user.eh_aluno %}
 <p>Você é aluno</p>
 {%else%}

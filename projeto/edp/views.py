@@ -13,7 +13,7 @@ from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from .filters import EdpFilter
-from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta, form_edp,
+from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta,
                     form_recursos_edp, form_resposta_edp, form_turma, video_form_resposta)
 from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma, RespostaEdp
 

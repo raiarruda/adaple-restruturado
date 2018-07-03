@@ -8,22 +8,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class CadastroAlunoForm(UserCreationForm):
-  #  a =  forms.ModelMultipleChoiceField(
-    #     queryset= assuntos.objects.all(),
-    #     widget=forms.CheckboxSelectMultiple,
-        
-    # )
-
     class Meta(UserCreationForm.Meta):
         model = User
-
+# TODO: pedir nome, sobrenome e email!! para evitar confusão no usuario
     @transaction.atomic
     def save(self):
         user = super().save(commit=False)
         user.eh_aluno = True
         user.save()
         student = Student.objects.create(user=user)
-#        student.a.add(*self.cleaned_data.get('a'))
 
         return user
         

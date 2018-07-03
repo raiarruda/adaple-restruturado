@@ -1,9 +1,9 @@
 {% load staticfiles %} {% load static %}
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdn.webrtc-experiment.com/RecordRTC.js"></script>
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="{% static 'jquery-3.2.1.min.js %}"></script>
+<script src="{% static 'RecordRTC.js %}"></script>
+<script src="{% static 'adapter-latest.js' %}"></script>
 
 
     <video id="your-video-id" controls autoplay=""></video>

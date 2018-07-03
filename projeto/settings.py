@@ -149,7 +149,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = 'accounts:dashboard'
+LOGIN_REDIRECT_URL = 'edp:edps'
 LOGOUT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'login'

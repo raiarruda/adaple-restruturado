@@ -41,7 +41,7 @@ class Edp(models.Model):
     atividades = models.TextField('Atividades')
     metodologia = models.TextField('Metodologia')
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='edps', on_delete=models.CASCADE)
-    nivel = models.IntegerField('Nível de proficiência', choices=NIVEL_CHOICES, default=1,blank=True)
+    nivel = models.IntegerField('Nível de proficiência', choices=NIVEL_CHOICES, default=0,blank=True)
 
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
@@ -75,7 +75,7 @@ class Turma(models.Model):
     def __str__(self):
         return self.nome
 
-    #TODO descobrir a diferença usando isso
+    #
     @models.permalink
     def get_absolute_url(self):
         return ('edp: turmas',(),{'slug':self.slug})

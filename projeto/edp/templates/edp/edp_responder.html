@@ -1,27 +1,16 @@
 <!-- templates/home.html-->
-{% extends 'dashboard.html' %} 
+{% extends 'base.html' %} 
 
 {% load bootstrap %} {% load wysiwyg %}
 {% block title %} {{title}}{% endblock %}
-{%block breadcrumb%}  
 
-    <li class="breadcrumb-item">
-        <a href="#">Estruturas Digital de Aprendizagem</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">{{edp}}</a>
-    </li>
-    <li class="breadcrumb-item active">
-        <a href="#">Responder</a>
-    </li>
-{% endblock%}
                 
 
 {% block dashboard %} 
 
 
     <div class="card border-primary mb-3">
-        <div class="card-header bg-primary"> Informações sobre a EDA</div>
+        <div class="card-header bg-primary"> Informações sobre a <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr></div>
             <div class="card-body ">
                 <p> <b>Nome:</b>{{edp}} </p>
                 <p>

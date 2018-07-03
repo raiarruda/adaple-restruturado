@@ -1,20 +1,9 @@
 <!-- templates/home.html-->
-{% extends 'dashboard.html' %} 
+{% extends 'base.html' %} 
 
 {% load bootstrap %} {% load wysiwyg %}
 {% block title %} {{title}}{% endblock %}
-{%block breadcrumb%}  
 
-    <li class="breadcrumb-item">
-        <a href="{% url 'edp:edps'%}">Estruturas Digital de Aprendizagem</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="#">{{edp}}</a>
-    </li>
-    <li class="breadcrumb-item active">
-        <a href="#">Deletar</a>
-    </li>
-{% endblock%}
                 
 
 {% block dashboard %} 

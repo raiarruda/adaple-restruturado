@@ -1,36 +1,92 @@
-<!-- templates/registration/login.html -->
-{% extends 'base.html' %} {%load static %} {%block title%} Entrar {%endblock%} {% block content %}
-{%load bootstrap   %} {% load widget_tweaks %}
-<div style="max-width: 330px;" >
-<form method="post">
-        <legend>Entrar</legend>
-        {% csrf_token %}
-      {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-      
-      {% for field in form.visible_fields %}
-        <div class="form-group row">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field | add_class:'form-control'}}
-          {% for error in field.errors %}
-            <span class="help-block text-danger">Senha ou usuário incorretos.</span>
-          {% endfor %}
-        </div>
-      {% endfor %}
-        
-      <div class="form-group">
-            <div class="col-sm-10 col-sm-offset-2">
-              <button type="submit" class="btn btn-primary">Entrar</button>
-              <a class="btn btn-primary" href="{% url 'accounts:cadastro' %}"> Cadastrar</a>
-  
+{%load static %}{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{%block title%} ENTRAR  {%endblock%} </title>
+    
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static  'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{% static  'vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static  'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static  'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Entrar no Adalin</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="POST" role="form">
+                            {% csrf_token %}
+                            <fieldset>
+
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+
+                            {% for field in form.visible_fields %}
+                              <div class="form-group">
+                              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                              {{ field | add_class:'form-control'}}
+                              {% for error in field.errors %}
+                                <span class="help-block text-danger">Senha ou usuário incorretos.</span>
+                              {% endfor %}
+                            </div>
+                            {% endfor %}
+                       
+                            <button type="submit"  class="btn btn-lg btn-success btn-block">Entrar</button>
+                            <div class="divider"></div>
+                            <div class="checkbox">
+                              <a class="btn btn-lg btn-primary btn-block" href="{% url 'accounts:cadastro' %}"> Cadastrar</a>
+                            </div> 
+                                
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
-  </div>
+        </div>
+    </div>
 
-    </form>
+    <!-- jQuery -->
+    <script src="{% static  'vendor/jquery/jquery.min.js' %}"></script>
 
-</div>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static  'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static  'vendor/metisMenu/metisMenu.min.js' %}"></script>
 
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static  'dist/js/sb-admin-2.js' %}"></script>
 
-{% endblock %}
+</body>
+
+</html>

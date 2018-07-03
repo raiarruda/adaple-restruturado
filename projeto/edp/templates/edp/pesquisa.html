@@ -1,18 +1,9 @@
 <!-- templates/home.html-->
-{% extends 'dashboard.html' %}
+{% extends 'base.html' %}
 {%load staticfiles %} {% load bootstrap %} {% load crispy_forms_tags %} {% load widget_tweaks %} 
 {% block title %}{{title}}{% endblock %} 
 
-{%block breadcrumb%}
-
-<li class="breadcrumb-item">
-  <a href="#">Estruturas Digital de Aprendizagem</a>
-</li>
-<li class="breadcrumb-item active">
-  <a href="#">Pesquisa</a>
-</li>
-
-</li>{% endblock%} {% block dashboard %}
+{% block dashboard %}
 <div class="card border-primary mb-3">
     <div class="card-header bg-primary"> Pesquisar</div>
     <div class="card-body ">

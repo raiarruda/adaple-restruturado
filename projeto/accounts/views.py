@@ -29,7 +29,7 @@ class CadastroAlunoView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('accounts:dashboard')
+        return redirect('edp:edps')
 
 class CadastroProfessorView(CreateView):
     model = User
@@ -43,19 +43,10 @@ class CadastroProfessorView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('accounts:dashboard')
+        return redirect('edp:edps')
 
 
 class CadastroView(TemplateView):
     template_name = 'registration/cadastro.html'
 
 
-def dashboard(request):
-    title= 'Meu painel'
-    template = 'dashboard.html'
-    usuario = request.user
-
-    if usuario.eh_professor:
-        return redirect('edp:minhas_edps')
-    else:
-        return render(request, template, {'title': title})
