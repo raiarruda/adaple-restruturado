@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% block dashboard %}
+
+<div class="row">
+  <div class="col-lg-12">
+  {% if user.is_authenticated and user.eh_professor %}
+<a href="{% url 'forum:new_board' %}" class="btn btn-success btn-lg ">NovQuadro</abbr></a>
+{% endif %}
+</div>
+</div>
+
   <table class="table">
     <thead class="thead-inverse">
       <tr>
-        <th>Board</th>
-        <th>Posts</th>
-        <th>Topics</th>
-        <th>Last Post</th>
+        <th>Quadro</th>
+        <th>Postagens</th>
+        <th>Tópico</th>
+        <th>Ultima Postagem</th>
       </tr>
     </thead>
     <tbody>

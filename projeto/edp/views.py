@@ -3,20 +3,26 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.http import (HttpRequest, HttpResponse, HttpResponseRedirect,
-                         StreamingHttpResponse)
-from django.shortcuts import (get_object_or_404, redirect, render,
-                              render_to_response)
-# Create your views here.
+from django.http import (Http404, HttpRequest, HttpResponse,
+                         HttpResponseRedirect, StreamingHttpResponse)
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect,
+                              render, render_to_response)
 from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
-from django.http import Http404
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from projeto.edp.serializer import RecursosEdpSerializer, EdpSerializer, RespostasEdpSerializer
+
+from .decorators import student_required, teacher_required
 from .filters import EdpFilter
 from .forms import (Edp_form, UploadFileForm, UploadFileFormResposta,
-                    form_recursos_edp, form_resposta_edp, form_turma, video_form_resposta)
-from .models import Edp, Habilidade, Matricula, RecursosEdp, Turma, RespostaEdp
-from .decorators import student_required, teacher_required
+                    form_recursos_edp, form_resposta_edp, form_turma,
+                    video_form_resposta)
+from .models import Edp, Habilidade, Matricula, RecursosEdp, RespostaEdp, Turma
+
 User = get_user_model()
 
 @login_required
@@ -31,7 +37,7 @@ def edps(request):
 
  
 
-@login_required
+@teacher_required
 def minhas_edps(request):
     edps = request.user.edps.all()
     recursos = RecursosEdp.objects.all()
@@ -213,6 +219,7 @@ def responder_edp(request, slug):
         if form.is_valid():
             resposta_edp = form.save(commit=False)
             resposta_edp.edp = epd
+            resposta_edp.usuario= request.user
             resposta_edp.video = uploaded_file_url
             resposta_edp.save()
         return render(request, 'edp/responder_edp.html', {
@@ -227,6 +234,8 @@ def responder_edp(request, slug):
 
             resposta_edp = form.save(commit=False)
             resposta_edp.edp=edp
+            resposta_edp.usuario= request.user
+
             resposta_edp.save()
 
             #return redirect(reverse(edp.get_absolute_url()))
@@ -238,8 +247,21 @@ def responder_edp(request, slug):
         return render( request, template, {'form':form, 'title':title, 'edp':edp, 'recursos': recursos})
 
 
-
 @login_required
+def listaEDArespondida(request):
+    
+    edps = Edp.objects.all()
+    # recursos = RecursosEdp.objects.all()
+    respostas = RespostaEdp.objects.all()
+    title = 'Estruturas Digitais Pedagogicas'
+    template = 'edp/listarEDArespondida.html'
+
+    return render(request, template, {'title': title, 'edps': edps, 'respostas': respostas})
+
+ 
+
+
+# @login_required
 # def salvar_video_resposta(request, pk):
 #      resposta = get_object_or_404(Edp, slug=slug)
 #     if request.method == 'POST' and request.FILES['video_file']:
@@ -319,3 +341,41 @@ def pesquisaEdp(request):
     edps_pesquisa = EdpFilter(request.GET, queryset=edps)
 
     return render(request, template_name, {'edps_pesquisa': edps_pesquisa, 'title': title})
+
+
+class RecursosEdpView(APIView):
+    def get(self, request):
+        recursos=  get_list_or_404( RecursosEdp)
+        serializer = RecursosEdpSerializer(recursos, many=True)
+        return Response(serializer.data)
+    def put(self, request):
+        serializer = RecursosEdpSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EdpView(APIView):
+    def get(self, request):
+        edps=  get_list_or_404( Edp)
+        serializer = EdpSerializer(edps, many=True)
+        return Response(serializer.data)
+    def put(self, request):
+        serializer = EdpSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RespostasEdaView(APIView):
+    def get(self, request):
+        respostas=  get_list_or_404( RespostaEdp)
+        serializer = RespostasEdpSerializer(respostas, many=True)
+        return Response(serializer.data)
+    def put(self, request):
+        serializer = RespostasEdpSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

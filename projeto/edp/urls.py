@@ -4,13 +4,14 @@ from django_filters.views import FilterView
 from django.contrib.auth import views as auth_views
 from projeto.edp.filters import EdpFilter
 from . import views
+from django.views.generic import TemplateView
 app_name='edp'
 
 urlpatterns = [
     path('', views.edps, name='edps'),
     
     path('minhas', views.minhas_edps, name='minhas_edps'),
-    path('respondidas', views.minhas_edps_aluno, name='respondidas'),
+    path('respondidas', views.listaEDArespondida, name='respondidas'),
     path('detalhes/<slug:slug>', views.detalhe_edp, name= 'detalhe_edp'),
     
     path('nova/edp', views.nova_edp, name= "nova_edp"),
@@ -30,5 +31,15 @@ urlpatterns = [
 
     path('camera/<slug:slug>', views.salvar_video, name="camera"),
     path('camera_ed/<slug:slug>', views.editar_video, name="ed_camera"),
+
+    # path('edp/api/<int:pk>', RecursosEdpView.as_view()),
     # path('camera2/<slug:slug>', views.salvar_video_resposta, name="camera_resposta"),
+]
+# api urls
+urlpatterns += [
+    path('edps/api/', views.EdpView.as_view()),
+    path('recursos/api/', views.RecursosEdpView.as_view()),
+    path('respostas/api/', views.RespostasEdaView.as_view()),
+
+
 ]

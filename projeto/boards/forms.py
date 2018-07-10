@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Topic
+from .models import Topic, Board
 
 
 class NewTopicForm(forms.ModelForm):
@@ -15,3 +15,23 @@ class NewTopicForm(forms.ModelForm):
     class Meta:
         model = Topic
         fields = ['subject', 'message']
+
+class NewBoardForm(forms.ModelForm):
+    name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'rows': 5, 'placeholder': 'Nome do Quadro'}
+        ),
+        max_length=30,
+        help_text='The max length of the text is 4000.'
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'rows': 5, 'placeholder': 'Descrição'}
+        ),
+        max_length=100,
+        help_text='The max length of the text is 4000.'
+    )
+
+    class Meta:
+        model = Board
+        fields = ['name', 'description']
