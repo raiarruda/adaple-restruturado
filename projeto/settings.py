@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     #own
     'projeto.accounts',
     'projeto.edp',
-    'projeto.boards'
+    'projeto.boards',
 
     'crispy_forms',
     'bootstrapform',
