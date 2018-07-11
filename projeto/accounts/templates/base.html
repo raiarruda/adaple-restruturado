@@ -13,14 +13,13 @@
 
     <title>{% block title %} ADAPLE - {{title}} {% endblock %}</title>
     <title>Ambiente Digital de Aprendizagem de Portugues como Lingua Estrangeira</title>
-    <!-- Angular -->
-    <script src="{% static 'angular.min.js' %}"></script>
-    <script src="{% static 'angular-projeto.js' %}"></script>
+
+
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href=" {% static 'vendor/metisMenu/metisMenu.min.css' %}   " rel="stylesheet ">
+    <link href=" {% static 'vendor/metisMenu/metisMenu.min.css' %}   " rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href=" {% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
@@ -42,7 +41,7 @@
 
 </head>
 
-<body ng-app="projeto">
+<body>
 
     <div id="wrapper">
 
@@ -315,10 +314,10 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="{% url 'edp:respondidas' %}"><i class="fa fa-table fa-fw"></i> <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr> Respondida</a>
+                            <a href="#"><i class="fa fa-table fa-fw"></i> <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr> Respondida</a>
                         </li>
                         <li>
-                            <a href="{% url 'forum:home' %}"><i class="fa fa-edit fa-fw"></i> Fórum</a>
+                            <a href="#"><i class="fa fa-edit fa-fw"></i> Fórum</a>
                         </li>
                     </ul>
                 </div>
@@ -362,7 +361,7 @@
                                 <a href="#"><i class="fa fa-table fa-fw"></i> <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr> Respondida</a>
                             </li>
                             <li>
-                                <a href="{% url 'forum:home' %}"><i class="fa fa-edit fa-fw"></i> Fórum</a>
+                                <a href="#"><i class="fa fa-edit fa-fw"></i> Fórum</a>
                             </li>
                         </ul>
                     </div>

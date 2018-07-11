@@ -17,7 +17,50 @@ upload_storage = FileSystemStorage(location=STATIC_CUR_DIR)
 
 User = get_user_model()
 
+# Create your models here.
+class Habilidade (models.Model):
+    nome = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.nome
+
+
+class Edp(models.Model):
+    NIVEL_CHOICES = (
+		(0, 'Básico (Sem certificação)'),
+		(1, 'Intermediário'),
+		(2, 'Intermediário Superior'),
+        (3, 'Avançado'),
+        (4, 'Avançado Superior')
+	)
+
+    titulo = models.CharField('Título', max_length=100)
+    slug = models.SlugField('Atalho')
+    objetivo_pedagogico = models.TextField('Objetivo Pegagogico')
+    habilidades = models.ManyToManyField(Habilidade, related_name='habilidade_edp')    
+    atividades = models.TextField('Atividades')
+    metodologia = models.TextField('Metodologia')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='edps', on_delete=models.CASCADE)
+    nivel = models.IntegerField('Nível de proficiência', choices=NIVEL_CHOICES, default=0,blank=True)
+
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+
+    def iniciar(self):
+        self.save()
+
+    def __str__(self):
+        return self.titulo
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('edp:detalhe_edp', (), {'slug': self.slug})
+
+    
+    class Meta:
+        verbose_name = 'Estrutura Digital de Aprendizagem'
+        verbose_name_plural = 'Estruturas Digital de Aprendizagem'
+        ordering = ['created_at']
 
 class Turma(models.Model):
     nome = models.CharField('Nome', max_length=100)
@@ -65,51 +108,6 @@ class Matricula(models.Model):
         verbose_name_plural = 'Matriculas'
         unique_together = (('usuario','turma'),)
 
-# Create your models here.
-class Habilidade (models.Model):
-    nome = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.nome
-
-
-class Edp(models.Model):
-    NIVEL_CHOICES = (
-		(0, 'Básico (Sem certificação)'),
-		(1, 'Intermediário'),
-		(2, 'Intermediário Superior'),
-        (3, 'Avançado'),
-        (4, 'Avançado Superior')
-	)
-
-    titulo = models.CharField('Título', max_length=100)
-    slug = models.SlugField('Atalho')
-    objetivo_pedagogico = models.TextField('Objetivo Pegagogico')
-    habilidades = models.ManyToManyField(Habilidade, related_name='habilidade_edp')    
-    atividades = models.TextField('Atividades')
-    metodologia = models.TextField('Metodologia')
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='edps', on_delete=models.CASCADE)
-    nivel = models.IntegerField('Nível de proficiência', choices=NIVEL_CHOICES, default=0,blank=True)
-
-    created_at = models.DateTimeField('Criado em', auto_now_add=True)
-    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
-
-    def iniciar(self):
-        self.save()
-
-    def __str__(self):
-        return self.titulo
-    
-    @models.permalink
-    def get_absolute_url(self):
-        return ('edp:detalhe_edp', (), {'slug': self.slug})
-
-    
-    class Meta:
-        verbose_name = 'Estrutura Digital de Aprendizagem'
-        verbose_name_plural = 'Estruturas Digital de Aprendizagem'
-        ordering = ['created_at']
-
 
 class RecursosEdp(models.Model):
    
@@ -142,11 +140,11 @@ class RecursosEdp(models.Model):
         verbose_name = 'Recurso Estrutura Digital de Aprendizagem'
         verbose_name_plural = 'Recursos Estruturas  Digital de Aprendizagem'
         ordering = ['created_at']
-       
+
+        
 class RespostaEdp(models.Model):
    
     edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='respostas', on_delete=models.CASCADE)
-
     video_embedded = EmbedVideoField(blank=True, null=True)
     texto = models.TextField('Texto', blank=True)
     video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
