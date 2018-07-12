@@ -26,15 +26,13 @@ $.ajaxSetup({
 });
 
 
-
+var formData = new FormData();
 // capture camera and/or microphone
 
 
 navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (camera) {
 
     var recorder;
-    var formData = new FormData();
-
 
     document.getElementById('iniciar').onclick = (function (){
         this.disabled = true;
@@ -63,8 +61,9 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function 
             var fileObject = new File([blob], fileName, {
                 type: 'video/webm'
             });
+
             // recorded data
-            formData.append('video_file', fileObject);
+            formData.append('video', fileObject);
             // file name
             formData.append('video-filename', fileObject.name);
             // document.getElementById('h').innerHTML = 'Uploading to PHP using jQuery.... file size: (' + bytesToSize(fileObject.size) + ')';
@@ -72,6 +71,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function 
           
             // release camera
             // document.getElementById('your-video-id').srcObject = document.getElementById('your-video-id').src = null;
+           
             camera.getTracks().forEach(function (track) {
                 track.stop();
             });
@@ -79,34 +79,6 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function 
 
         
     }); //fecha a função de terminar o video
-    document.getElementById('salvar-form-com-video').onclick=(function(){
-        console.log("btn salvar");
-        salvar()
-    });
-    function salvar() {
-
-        var object = {};
-        formData.forEach(function(value, key){
-            object[key] = value;
-        });
-            object['oi']= 'text)';
-        var json = JSON.stringify(object);
-
-        $.ajax({
-            url: '', // replace with your own server URL
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function (data) {
-                
-                console.log(json)
-            }
-        });
-    };
-
-
 
 });
 

@@ -60,53 +60,53 @@ class Edp(models.Model):
     class Meta:
         verbose_name = 'Estrutura Digital de Aprendizagem'
         verbose_name_plural = 'Estruturas Digital de Aprendizagem'
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
-class Turma(models.Model):
-    nome = models.CharField('Nome', max_length=100)
-	# Slug é um nome unico, sem espacos e em minusculas
-    slug = models.SlugField('Atalho')
-    start_date = models.DateField( 	'Data de Início', null=True, blank=True )
-   # usuario = Fore
-    # DateTimeField pega data e horario
-    created_at = models.DateTimeField('Criado em', auto_now_add=True)
-    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+# class Turma(models.Model):
+#     nome = models.CharField('Nome', max_length=100)
+# 	# Slug é um nome unico, sem espacos e em minusculas
+#     slug = models.SlugField('Atalho')
+#     start_date = models.DateField( 	'Data de Início', null=True, blank=True )
+#    # usuario = Fore
+#     # DateTimeField pega data e horario
+#     created_at = models.DateTimeField('Criado em', auto_now_add=True)
+#     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
-    def __str__(self):
-        return self.nome
+#     def __str__(self):
+#         return self.nome
 
-    #
-    @models.permalink
-    def get_absolute_url(self):
-        return ('edp: turmas',(),{'slug':self.slug})
+#     #
+#     @models.permalink
+#     def get_absolute_url(self):
+#         return ('edp: turmas',(),{'slug':self.slug})
     
-    class Meta:
-        verbose_name = 'Turma'
-        verbose_name_plural = 'Turmas'
-        ordering = ['created_at']
+#     class Meta:
+#         verbose_name = 'Turma'
+#         verbose_name_plural = 'Turmas'
+#         ordering = ['-created_at']
 
-class Matricula(models.Model):
-    STATUS_CHOICES = (
-		(0, 'Pendente'),
-		(1, 'Aprovado'),
-		(2, 'Cancelado'),
-	)
+# class Matricula(models.Model):
+#     STATUS_CHOICES = (
+# 		(0, 'Pendente'),
+# 		(1, 'Aprovado'),
+# 		(2, 'Cancelado'),
+# 	)
 
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Usuário', related_name='matriculas', on_delete=models.CASCADE)
-    turma = models.ForeignKey(Turma, verbose_name='Turma', related_name='matriculas', on_delete=models.CASCADE)
-    status = models.IntegerField('Situação', choices=STATUS_CHOICES, default=1,blank=True)
+#     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Usuário', related_name='matriculas', on_delete=models.CASCADE)
+#     turma = models.ForeignKey(Turma, verbose_name='Turma', related_name='matriculas', on_delete=models.CASCADE)
+#     status = models.IntegerField('Situação', choices=STATUS_CHOICES, default=1,blank=True)
 
-    created_at = models.DateTimeField('Criado em', auto_now_add=True)
-    updated_at = models.DateTimeField('Atualizado em', auto_now=True)
+#     created_at = models.DateTimeField('Criado em', auto_now_add=True)
+#     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
-    def ativa_matricula(self):
-        self.status = 1
-        self.save()
+#     def ativa_matricula(self):
+#         self.status = 1
+#         self.save()
 
-    class Meta:
-        verbose_name = 'Matricula'
-        verbose_name_plural = 'Matriculas'
-        unique_together = (('usuario','turma'),)
+#     class Meta:
+#         verbose_name = 'Matricula'
+#         verbose_name_plural = 'Matriculas'
+#         unique_together = (('usuario','turma'),)
 
 
 class RecursosEdp(models.Model):
@@ -119,7 +119,7 @@ class RecursosEdp(models.Model):
     recebe_video_embedded = models.BooleanField('Responder com videos do youtube?', default=False )
     recebe_video = models.BooleanField('Responder com video?', default=False)
     recebe_imagem = models.BooleanField('Responder com imagem ?', default=False)
-    video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
+    video = models.FileField(upload_to='video/', storage=upload_storage, default="media/none.mp4")
 
 
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
@@ -147,7 +147,7 @@ class RespostaEdp(models.Model):
     edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='respostas', on_delete=models.CASCADE)
     video_embedded = EmbedVideoField(blank=True, null=True)
     texto = models.TextField('Texto', blank=True)
-    video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
+    video = models.FileField(upload_to='video/', storage=upload_storage, default="media/none.mp4")
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Usuário', related_name='respostas', on_delete=models.CASCADE)
 
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
@@ -167,6 +167,7 @@ class RespostaEdp(models.Model):
         verbose_name_plural = 'Resposta Estrutura Digital de Aprendizagem'
         ordering = ['edp']
 
-class Video(models.Model):
-    video = models.FileField(upload_to='media/videosenviados', storage=upload_storage, default="media/none.mp4")
-    resposta = models.ForeignKey(RespostaEdp, verbose_name='Video_resposta', related_name='video_pk', on_delete=models.CASCADE)
+# class Video(models.Model):
+#     video = models.FileField(upload_to='videos/', storage=upload_storage, default="media/none.mp4")
+#     # texto =models.CharField('Título', max_length=100)
+#     # resposta = models.ForeignKey(RespostaEdp, verbose_name='Video_resposta', related_name='video_pk', on_delete=models.CASCADE)

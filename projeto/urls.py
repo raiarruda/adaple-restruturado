@@ -25,11 +25,14 @@ urlpatterns = [
     path('', include('projeto.accounts.urls', namespace='accounts')),
     path('edps/', include('projeto.edp.urls', namespace='edp')),
     path('accounts/', include('django.contrib.auth.urls')),
-    
+
 
 ]
 urlpatterns += staticfiles_urlpatterns()
 
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+   
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,
@@ -37,6 +40,6 @@ if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
 
 urlpatterns += [
-    
+
     path('tinymce/', include('tinymce.urls')),
 ]

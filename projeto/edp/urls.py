@@ -15,8 +15,8 @@ urlpatterns = [
     
     path('nova/edp', views.nova_edp, name= "nova_edp"),
     path('adicionar/recursos/<slug:slug>', views.adicionar_recursos, name= "adicionar_recursos"),
-    path('nova/matricula/<slug:slug>', views.nova_matricula, name= "nova_matricula"),
-    path('nova/turma', views.nova_turma, name= "nova_turma"),
+    # path('nova/matricula/<slug:slug>', views.nova_matricula, name= "nova_matricula"),
+    # path('nova/turma', views.nova_turma, name= "nova_turma"),
 
     path('editar/edp/<slug:slug>', views.editar_edp, name= "editar_edp"),
     path('editar/edp/recursos/<slug:slug>', views.editar_recursos, name='editar_recursos'),
@@ -24,11 +24,11 @@ urlpatterns = [
     path('deletar/edp/<slug:slug>', views.deletar_edp, name= "deletar_edp"),
     
     path('responder/<slug:slug>', views.responder_edp, name="responder_edp"),
-    path('turmas', views.turmas, name= "turmas"),
+    # path('turmas', views.turmas, name= "turmas"),
     
     path('pesquisa', views.pesquisaEdp, name='pesquisa'),
 
-    path('camera/', views.salvar_video, name="camera"),
-    path('camera_ed/<slug:slug>', views.editar_video, name="ed_camera"),
-    # path('camera2/<slug:slug>', views.salvar_video_resposta, name="camera_resposta"),
+    # path('camera/', views.salvar_video, name="camera"),
+    # path('camera_ed/<slug:slug>', views.editar_video, name="ed_camera"),
+    # # path('camera2/<slug:slug>', views.salvar_video_resposta, name="camera_resposta"),
 ]

@@ -1,7 +1,9 @@
-
+"
 {% extends 'base.html' %}{%load staticfiles %} {% load wysiwyg %}{% block title %}{{title}}{% endblock %}
 {%load widget_tweaks  %}
 <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+
+
 <script>tinymce.init({ selector: 'textarea' });</script> {% block dashboard %}
 <div class="row">
 	<div class="col-sm-12">
@@ -11,7 +13,47 @@
 </div>
 <!-- /.row -->
 
-<form method="post">
+<script src="{% static 'camera/RecordRTC.js' %}"></script>
+<script src="{% static 'camera/adapter-latest.js' %}"></script>
+<script>
+
+	function populateFormData($form, formData){
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function(n, i){
+		//indexed_array[n['name']] = n['value'];
+		formData.append(n['name'], n['value'])
+    });
+
+    return formData;
+}
+
+
+function salvarRecurso(form){
+console.log(populateFormData($(form),formData))
+
+
+
+ $.ajax({
+            url: '', // replace with your own server URL
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function (data) {
+                
+                console.log(data)
+            }
+        });
+
+
+return false;
+}
+
+</script>
+<form method="post" name="formulario" onsubmit="return salvarRecurso(this)">
 	{% csrf_token %}
 
 	<div class="row">
@@ -35,7 +77,21 @@
 						</div>
 						<p>Observação, para gravar um video antes é necessário salvar os recursos anteriores
 						</p>
-						<a href="{% url 'edp:camera' edp.slug %}" class="btn btn-outline btn-primary btn-lg disabled">Gravar Video </a>
+						<button type="button" onclick="$('#espaco-video').show(); $(this).hide()" class="btn btn-outline btn-primary btn-lg ">Gravar Video </button>
+
+			<div id="espaco-video" style="display: none;">
+							<video id="your-video-id" controls autoplay=""></video>
+							<div class="form-horizontal">
+							
+									<button id="iniciar" class="btn btn-small btn-danger" type="button"> Começar gravação </button>
+							
+									<button class="btn btn-small btn-success" id="terminar" type="button" disabled>Terminar Gravação</button>
+							</div>
+								
+								<script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
+						
+							
+						</div>
 
 					</div>
 						<!--/.col-sm-12  -->
