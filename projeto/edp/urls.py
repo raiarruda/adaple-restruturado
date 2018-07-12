@@ -28,7 +28,7 @@ urlpatterns = [
     
     path('pesquisa', views.pesquisaEdp, name='pesquisa'),
 
-    path('camera/<slug:slug>', views.salvar_video, name="camera"),
+    path('camera/', views.salvar_video, name="camera"),
     path('camera_ed/<slug:slug>', views.editar_video, name="ed_camera"),
     # path('camera2/<slug:slug>', views.salvar_video_resposta, name="camera_resposta"),
 ]
