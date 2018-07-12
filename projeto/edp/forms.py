@@ -86,50 +86,24 @@ class form_recursos_edp(forms.ModelForm):
 
 
 
-# class form_resposta_edp(forms.ModelForm):
+class form_resposta_edp(forms.ModelForm):
  
-#     video_embedded = forms.CharField(
-#         label='Video Externo', 
-#         required=False)
-#     texto = forms.CharField(
-#         label='Texto', 
-#         widget=forms.Textarea, 
-#         required=False)
+    video_embedded = forms.CharField(
+        label='Video Externo', 
+        required=False)
+    texto = forms.CharField(
+        label='Texto', 
+        widget=forms.Textarea, 
+        required=False)
 
-#     class Meta:
-#         model = RespostaEdp
-#         fields = ('video_embedded', 'texto')
+    class Meta:
+        model = RespostaEdp
+        fields = ('video_embedded', 'texto')
         
-    # @transaction.atomic
-    # def save(self):
-    #     resposta = super().save(commit=False)
-    #     resposta.usuario = request.user
-    #     resposta.save()
-    #     video = Video.objects.create(resposta=resposta)
-    #     return resposta
-
-# class UploadFileForm(forms.ModelForm): 
-   
-#     video_file = forms.FileField()
-#     class Meta:
-#         model = Video
-#         fields = ['video', ]
-
-# class UploadFileFormResposta(forms.ModelForm): 
-#     video_file = forms.FileField()
-#     class Meta:
-#         model = RecursosEdp
-#         fields = ['video', ]
-# class video_form_resposta(forms.ModelForm):
-#     video = forms.FileField()
-
-#     class Meta:
-#         model = Video
-#         fields = ['video',]
-
-# class form_turma(forms.ModelForm):
-#     start_date = forms.DateField(widget=forms.SelectDateWidget())
-#     class Meta:
-#         model = Turma
-#         fields = ('nome', 'start_date',)
-
+    @transaction.atomic
+    def save(self):
+        resposta = super().save(commit=False)
+        resposta.usuario = request.user
+        resposta.save()
+        video = Video.objects.create(resposta=resposta)
+        return resposta

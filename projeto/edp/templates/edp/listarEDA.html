@@ -42,8 +42,8 @@
 
             <small class="text-right" >
              {% if user.is_authenticated and user.eh_professor %}
-                <a href="{% url 'edp:editar_edp' edp.slug %}" class="sm"><i class="fa fa-edit"></i> </a>
-                <a href="{% url 'edp:deletar_edp' edp.slug %}" class="sm"><i class="fa fa-trash-alt "></i> </a>
+                <a href="{% url 'edp:editar_edp' edp.slug %}" class="sm"><i class="fa fa-edit"></i></a>
+                <a href="{% url 'edp:deletar_edp' edp.slug %}" class="sm"><i class="fa fa-trash"></i></a>
 
 
             </td>
