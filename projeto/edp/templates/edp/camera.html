@@ -2,8 +2,8 @@
 
 
 <script src="{% static 'jquery-3.2.1.min.js' %}"></script>
-<script src="{% static 'RecordRTC.js' %}"></script>
-<script src="{% static 'adapter-latest.js' %}"></script>
+<script src="{% static 'camera/RecordRTC.js' %}"></script>
+<script src="{% static 'camera/adapter-latest.js' %}"></script>
 
 
     <video id="your-video-id" controls autoplay=""></video>
@@ -11,13 +11,8 @@
 
         <button id="iniciar" class="btn btn-small btn-danger" > Começar gravação </button>
 
-
-
         <button class="btn btn-small btn-success" id="terminar" disabled>Terminar Gravação</button>
-   
-
-
-
+        <button class="btn btn-small btn-success" id="salvar-form-com-video" disabled> Salvar </button>
 </div>
     
     <script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>

@@ -33,6 +33,8 @@ $.ajaxSetup({
 navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (camera) {
 
     var recorder;
+    var formData = new FormData();
+
 
     document.getElementById('iniciar').onclick = (function (){
         this.disabled = true;
@@ -48,7 +50,8 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function 
    
     //iniciar a funcao de graavar video apos apertar botao terminar
     document.getElementById('terminar').onclick = (function () {
-
+        document.getElementById('salvar-form-com-video').disabled=false;
+        this.disabled = true;
         recorder.stopRecording(function () {
 
             // get recorded blob
@@ -60,33 +63,51 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function 
             var fileObject = new File([blob], fileName, {
                 type: 'video/webm'
             });
-            var formData = new FormData();
             // recorded data
             formData.append('video_file', fileObject);
             // file name
             formData.append('video-filename', fileObject.name);
             // document.getElementById('h').innerHTML = 'Uploading to PHP using jQuery.... file size: (' + bytesToSize(fileObject.size) + ')';
             // upload using jQuery
-            $.ajax({
-                url: '', // replace with your own server URL
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: 'POST',
-                success: function (response) {
-
-                    alert(response); // error/failure
-                }
-            });
+          
             // release camera
-            document.getElementById('your-video-id').srcObject = document.getElementById('your-video-id').src = null;
+            // document.getElementById('your-video-id').srcObject = document.getElementById('your-video-id').src = null;
             camera.getTracks().forEach(function (track) {
                 track.stop();
             });
         });
-        // }, milliSeconds);
-    }); //fecha a função de gravar o video
+
+        
+    }); //fecha a função de terminar o video
+    document.getElementById('salvar-form-com-video').onclick=(function(){
+        console.log("btn salvar");
+        salvar()
+    });
+    function salvar() {
+
+        var object = {};
+        formData.forEach(function(value, key){
+            object[key] = value;
+        });
+            object['oi']= 'text)';
+        var json = JSON.stringify(object);
+
+        $.ajax({
+            url: '', // replace with your own server URL
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function (data) {
+                
+                console.log(json)
+            }
+        });
+    };
+
+
+
 });
 
 

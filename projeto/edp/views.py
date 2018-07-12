@@ -264,28 +264,26 @@ def responder_edp(request, slug):
 
 
 @csrf_exempt
-def salvar_video(request, slug):
-    edp = get_object_or_404(Edp, slug=slug)
-    recursos =  get_object_or_404(RecursosEdp, edp=edp)
+def salvar_video(request):
     if request.method == 'POST' and request.FILES['video_file']:
         myfile = request.FILES['video_file']
-        form = UploadFileForm(request.POST, request.FILES)
+        # form = UploadFileForm(request.POST, request.FILES)
         fs = FileSystemStorage()
         filename = fs.save('video/'+ myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
        
-        if form.is_valid():
+        # if form.is_valid():
 
-          #  recursos_edp = form.save(commit=False)
-           # recursos_edp.edp=edp
-         #   recursos_edp.video=uploaded_file_url
+        #   #  recursos_edp = form.save(commit=False)
+        #    # recursos_edp.edp=edp
+        #  #   recursos_edp.video=uploaded_file_url
           
-            recursos.video= uploaded_file_url
-            #recursos_edp.save()
+        #     # recursos.video= uploaded_file_url
+        #     #recursos_edp.save()
 
-        return render(request, 'edp/listarEDA.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
+        # return render(request, 'edp/listarEDA.html', {
+        #     'uploaded_file_url': uploaded_file_url
+        # })
     return render(request, 'edp/camera.html')
 
 def editar_video(request, slug):
