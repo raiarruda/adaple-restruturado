@@ -49,7 +49,7 @@
             </td>
             <td>
                 {% if edp.recursos.count != 0 %}
-                    <a href="#" class="btn btn-sm btn-info "><i class="fa fa-edit"></i> Recursos</a>   
+                    <a href="{% url 'edp:editar_recursos' edp.slug %}" class="btn btn-sm btn-info "><i class="fa fa-edit"></i> Recursos</a>   
                 {% else %}
                     <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-sm btn-warning "><i class="fa fa-plus"></i> Recursos</a> 
                 {% endif %}

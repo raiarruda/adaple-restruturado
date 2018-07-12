@@ -48,7 +48,6 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function 
    
     //iniciar a funcao de graavar video apos apertar botao terminar
     document.getElementById('terminar').onclick = (function () {
-        document.getElementById('salvar-form-com-video').disabled=false;
         this.disabled = true;
         recorder.stopRecording(function () {
 

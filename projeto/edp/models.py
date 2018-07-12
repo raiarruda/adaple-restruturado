@@ -63,8 +63,8 @@ class Edp(models.Model):
 
 class RecursosEdp(models.Model):
    
-    edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='recursos', on_delete=models.CASCADE)
-  #  edp = models.OneToOneField(Edp, verbose_name='Edp',  related_name='recursos', on_delete=models.CASCADE)
+    # edp = models.ForeignKey(Edp, verbose_name='Edp', related_name='recursos', on_delete=models.CASCADE)
+    edp = models.OneToOneField(Edp, verbose_name='Edp',  related_name='recursos', on_delete=models.CASCADE)
     video_embedded = EmbedVideoField(blank=True, null=True)
     texto =  models.TextField('Texto', blank=True)
     recebe_texto = models.BooleanField('Responder texto ?', default=False)
@@ -113,6 +113,9 @@ class RespostaEdp(models.Model):
     
     def iniciar(self):
         self.save()
+    # @models.permalink
+    # def get_absolute_url(self):
+    #     return ('edp:detalhe_edp', (), {'slug': self.slug})
 
     class Meta:
         verbose_name = 'Resposta Estrutura Digital de Aprendizagem'
