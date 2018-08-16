@@ -1,6 +1,5 @@
 from django.contrib import admin
-from projeto.accounts.models import assuntos, User # Register your models here.
+from projeto.accounts.models import User , Student# Register your models here.
 
-
-admin.site.register(assuntos)
+admin.site.register(Student)
 admin.site.register(User)

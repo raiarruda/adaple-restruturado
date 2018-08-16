@@ -40,10 +40,12 @@ console.log(populateFormData($(form),formData))
             data: formData,
             cache: false,
             contentType: false,
-            processData: false,
+			processData: false,
+			
             type: 'POST',
             success: function (data) {
-                
+				alert(data.alerta);
+				window.location = data.url;
                 console.log(data)
             }
         });
@@ -75,11 +77,11 @@ return false;
 							<label for="{{ form.texto.id_for_label }}">{{ form.texto.label }}</label>
 							{{ form.texto | add_class:'form-control'}} 
 						</div>
-						<p>Observação, para gravar um video antes é necessário salvar os recursos anteriores
-						</p>
+						
 						<button type="button" onclick="$('#espaco-video').show(); $(this).hide()" class="btn btn-outline btn-primary btn-lg ">Gravar Video </button>
-
-			<div id="espaco-video" style="display: none;">
+						<p>Instruções: Clique em Começar, para iniciar a gravação e em terminar para concluir a gravação.
+						</p>
+						<div id="espaco-video" style="display: none;">
 							<video id="your-video-id" controls autoplay=""></video>
 							<div class="form-horizontal">
 							
@@ -158,7 +160,7 @@ return false;
 		</div>
 		<!-- /.row -->
 
-		<button class="btn btn-larger btn-success " type="submit">Salvar Recursos</button>
+		<button class="btn btn-larger btn-success " onclick="$(this).disable()" type="submit">Salvar Recursos</button>
 		<a class='btn btn-larger btn-danger' href="{{request.META.HTTP_REFERER}}">Cancela</a>
 
 		</div>

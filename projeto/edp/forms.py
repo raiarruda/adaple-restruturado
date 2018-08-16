@@ -107,3 +107,12 @@ class form_resposta_edp(forms.ModelForm):
     class Meta:
         model = RespostaEdp
         fields = ('video_embedded', 'texto', 'video')
+    # @transaction.atomic
+    # def save(self, request):
+
+    #     resposta = super().save(commit=False)
+    #     edp.aprendiz = request.user
+
+    #     res.save()
+    #     edp.habilidades.add(*self.cleaned_data.get('habilidades'))
+    #     return edp

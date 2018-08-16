@@ -10,6 +10,7 @@ from django.shortcuts import (get_object_or_404, redirect, render, render_to_res
 from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
 
 from .decorators import student_required, teacher_required
 from .filters import EdpFilter
@@ -29,8 +30,7 @@ def edps(request):
 
     return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
 
-
-@login_required
+@teacher_required
 def minhas_edps(request):
     edps = request.user.edps.all()
     recursos = RecursosEdp.objects.all()
@@ -41,8 +41,7 @@ def minhas_edps(request):
     else:
         return redirect('edp:epds')
 
-
-@login_required
+@student_required
 def minhas_edps_aluno(request):
     edps = request.user.edps.all()
     recursos = RecursosEdp.objects.all()
@@ -54,7 +53,6 @@ def minhas_edps_aluno(request):
     else:
         return redirect('edp:epds')
 
-
 @teacher_required
 def detalhe_edp(request, slug):
 
@@ -64,7 +62,6 @@ def detalhe_edp(request, slug):
     template = 'edp/edp_detalhes.html'
     title = edp.titulo + '- Detalhes'
     return render(request, template, {'title': title, 'edp': edp, 'recursos': recursos, 'form': form})
-
 
 @teacher_required
 def nova_edp(request):
@@ -84,7 +81,6 @@ def nova_edp(request):
         form = Edp_form()
         return render(request, template, {'form': form})
 
-
 @teacher_required
 def editar_edp(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
@@ -100,7 +96,6 @@ def editar_edp(request, slug):
         form = Edp_form(instance=edp)
     return render(request, template, {'form': form})
 
-
 @teacher_required
 def deletar_edp(request, slug):
     template = 'edp/edp_deletar.html'
@@ -110,8 +105,6 @@ def deletar_edp(request, slug):
         return redirect('edp:edps')
     return render(request, template, {'edp': edp})
 
-
-
 @teacher_required
 def adicionar_recursos(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
@@ -119,7 +112,7 @@ def adicionar_recursos(request, slug):
     title = 'Adicionar Recursos a EDA - ' + edp.titulo
 
     if request.method == "POST":
-        print("aqui")
+        print("\nPOST\n")
         form = form_recursos_edp(request.POST, request.FILES)
 
         if 'video' in request.FILES:
@@ -135,12 +128,8 @@ def adicionar_recursos(request, slug):
             recursos_edp.edp = edp
             recursos_edp.video=uploaded_file_url
             recursos_edp.save()
-            print("aui2")
-            return Response(json.dumps({'url': reverse("../edps/")}), content_type='application/json')
-            # return reverse('edp:edps')
-           # return render( request, template, {'form':form, 'title':title, 'edp':edp})
+            return HttpResponse(json.dumps({'url': reverse("edp:edps"), 'alerta': 'Recursos adicionados a EDA com sucesso'}), content_type='application/json')
         else:
-            print("aqui3")
             print(form.errors.as_json)
             return redirect('edp:edps')
     else:
@@ -156,7 +145,7 @@ def editar_recursos(request, slug):
     uploaded_file_url = recursos.video
 
     if request.method == "POST":
-        print("aqui")
+        print("\nPOST\n")
         form = form_recursos_edp(request.POST, request.FILES, instance=recursos)
 
         if 'video' in request.FILES:
@@ -169,11 +158,8 @@ def editar_recursos(request, slug):
         if form.is_valid():
             form.video=uploaded_file_url
             form.save(request)
-            return Response(json.dumps({'url': reverse("../edps/")}), content_type='application/json')
-            # return reverse('edp:edps')
-           # return render( request, template, {'form':form, 'title':title, 'edp':edp})
+            return HttpResponse(json.dumps({'url': reverse("edp:edps"), 'alerta':'Editado com sucesso!'}), content_type='application/json')
         else:
-            print("aqui3")
             print(form.errors.as_json)
             return redirect('edp:edps')
     else:
@@ -203,7 +189,7 @@ def responder_edp(request, slug):
     title = 'Responder a EDA - ' + edp.titulo
     # uploaded_file_url = 'media/none.mp4'
     if request.method == "POST":
-        print("aqui")
+        print("\nPOST\n")
         form = form_resposta_edp(request.POST, request.FILES)
 
         if 'video' in request.FILES:
@@ -212,19 +198,16 @@ def responder_edp(request, slug):
             fs = FileSystemStorage()
             filename = fs.save('video/' + myfile.name, myfile)
             uploaded_file_url = fs.url(filename)
-            resposta.video=uploaded_file_url
 
         if form.is_valid():
 
             resposta = form.save(commit=False)
+            resposta.video=uploaded_file_url
             resposta.edp = edp
-            resposta.usuario = request.user
+            resposta.aprendiz = request.user
            
             resposta.save()
-            print("aui2")
-            # return Response(json.dumps({'url': reverse("../edps/")}), content_type='application/json')
-            return reverse('edp:edps')
-           # return render( request, template, {'form':form, 'title':title, 'edp':edp})
+            return HttpResponse(json.dumps({'url': reverse("edp:edps"), 'alerta':'Respondido com sucesso!'}), content_type='application/json')
         else:
             print("aqui3")
             print(form.errors.as_json)
@@ -232,7 +215,6 @@ def responder_edp(request, slug):
     else:
         form = form_resposta_edp()
         return render(request, template, {'form': form, 'title': title, 'edp': edp, 'recursos': recursos})
-
 
 @login_required
 def pesquisaEdp(request):

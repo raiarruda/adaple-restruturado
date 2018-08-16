@@ -28,13 +28,15 @@ $.ajaxSetup({
 
 var formData = new FormData();
 // capture camera and/or microphone
+var recorder;
 
 
-navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (camera) {
+document.getElementById('iniciar').onclick = (function (){
+    
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(function (camera) {
 
-    var recorder;
 
-    document.getElementById('iniciar').onclick = (function (){
+   
         this.disabled = true;
       
         document.getElementById('your-video-id').muted = true;

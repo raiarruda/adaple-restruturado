@@ -8,7 +8,7 @@ from django.db import models
 from django.utils import timezone
 from embed_video.fields import EmbedVideoField
 from tinymce.models import HTMLField
-
+from projeto.accounts.models import Student
 STATIC_CUR_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static')
 
 upload_storage = FileSystemStorage(location=STATIC_CUR_DIR)
@@ -100,13 +100,14 @@ class RespostaEdp(models.Model):
     video_embedded = EmbedVideoField(blank=True, null=True)
     texto = models.TextField('Texto', blank=True)
     video = models.FileField(upload_to='video/', storage=upload_storage, default="media/none.mp4")
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Usuário', related_name='respostas', on_delete=models.CASCADE)
+    aprendiz = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='aluno', related_name='respostaAluno', on_delete=models.CASCADE)
+    # aprendiz = models.ForeignKey(Student, verbose_name='aprendiz ', related_name='respostaAprendiz', on_delete=models.CASCADE)
 
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
-    def usuario(self):
-        return self.edp.usuario
+    def aluno(self):
+        return self.aluno
    
     def __str__(self):
         return self.edp.titulo

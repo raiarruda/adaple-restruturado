@@ -43,9 +43,9 @@
                         <h3 class="panel-title">Entrar no Adalin</h3>
                     </div>
                     <div class="panel-body">
-                        <form method="POST" role="form">
+                        <form method="POST">
                             {% csrf_token %}
-                            <fieldset>
+                            
 
                             {% for hidden in form.hidden_fields %}
                                 {{ hidden }}
@@ -55,9 +55,22 @@
                               <div class="form-group">
                               <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                               {{ field | add_class:'form-control'}}
-                              {% for error in field.errors %}
-                                <span class="help-block text-danger">Senha ou usuário incorretos.</span>
+                           
+                              {% if form.errors %}
+                              {% for field in form %}
+                                  {% for error in field.errors %}
+                                      <div class="alert alert-danger">
+                                          <strong>{{ error|escape }}</strong>
+                                      </div>
+                                  {% endfor %}
                               {% endfor %}
+                              {% for error in form.non_field_errors %}
+                                  <div class="alert alert-danger">
+                                      <strong>  {{ error|escape }}</strong>
+                                  </div>
+                              {% endfor %}
+                          {% endif %}
+                                    
                             </div>
                             {% endfor %}
                        
@@ -67,7 +80,6 @@
                               <a class="btn btn-lg btn-primary btn-block" href="{% url 'accounts:cadastro' %}"> Cadastrar</a>
                             </div> 
                                 
-                            </fieldset>
                         </form>
                     </div>
                 </div>

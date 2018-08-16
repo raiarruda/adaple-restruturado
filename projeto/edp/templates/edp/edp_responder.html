@@ -38,7 +38,8 @@ console.log(populateFormData($(form),formData))
             processData: false,
             type: 'POST',
             success: function (data) {
-                
+                alert(data.alerta);
+				window.location = data.url;
                 console.log(data)
             }
         });
@@ -136,7 +137,7 @@ return false;
     <div class="panel panel-warning ">
         <div class="panel-heading"> Recursos de Resposta</div>
             <div class="panel-body">
-                <form method="post" name="formulario" onsubmit="return salvarResposta(this)">
+                <form method="POST" name="formulario" onsubmit="return salvarResposta(this)">
                     {% csrf_token %}
                         <div class="form-group">
                             {% if recursos.recebe_texto == True %}
@@ -146,14 +147,31 @@ return false;
                                 {{form.video_embedded | bootstrap}}
                             {% endif %}
                             
-                            {% if recursos.recebe_video %}
-                            {% include 'edp/camera.html' %}
-                            {%comment%}<p> 
-                                <a href="{% url 'edp:camera_resposta' edp.slug %}" class="btn btn-success btn-larger">Gravar Video </a> 
-                            </p> {%endcomment%} 
-        
-                         {% endif %}
                             
+                            {% if recursos.recebe_video == True %}
+
+                
+                            <button type="button" onclick="$('#espaco-video').show(); $(this).hide()" class="btn btn-outline btn-primary btn-lg ">Gravar Video </button>
+                           
+                <div id="espaco-video" style="display: none;">
+                              
+                    <p>Instruções: Clique em Começar, para iniciar a gravação e em terminar para concluir a gravação.
+                    </p>
+                    <video id="your-video-id" controls autoplay=""></video>
+                                <div class="form-horizontal">
+                                
+                                        <button id="iniciar" class="btn btn-small btn-danger" type="button"> Começar gravação </button>
+                                
+                                        <button class="btn btn-small btn-success" id="terminar" type="button" disabled>Terminar Gravação</button>
+                                </div>
+                                    
+                                    <script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
+                            
+                                
+                            </div>
+    
+                            {% endif %}
+                                
                         </div>
                     <div class="pull-right">
 
