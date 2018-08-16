@@ -7,6 +7,13 @@
                 
 
 {% block dashboard %} 
+<div class="row">
+	<div class="col-sm-12">
+		<h1 class="page-header">Recursos para <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr>: {{edp}}</h1>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
 
 <script src="{% static 'camera/RecordRTC.js' %}"></script>
 <script src="{% static 'camera/adapter-latest.js' %}"></script>
@@ -50,14 +57,7 @@ return false;
 
 </script>
 
-<div class="row">
-        <div class="col-lg-12">
-              
-              <h1 class="page-header"> Responder</h1>
-        </div>
-        <!-- /.col-lg-12 -->
-</div>
-<!-- ./row -->
+
 
 <div class="row">
         <div class="col-lg-12">
@@ -148,29 +148,27 @@ return false;
                             {% endif %}
                             
                             
-                            {% if recursos.recebe_video == True %}
-
-                
+                            {% if recursos.recebe_video == True %}  
                             <button type="button" onclick="$('#espaco-video').show(); $(this).hide()" class="btn btn-outline btn-primary btn-lg ">Gravar Video </button>
-                           
-                <div id="espaco-video" style="display: none;">
+                            {% endif %}
+                            <div id="espaco-video" style="display: none;">
                               
-                    <p>Instruções: Clique em Começar, para iniciar a gravação e em terminar para concluir a gravação.
-                    </p>
-                    <video id="your-video-id" controls autoplay=""></video>
+                            <p>Instruções: Clique em Começar, para iniciar a gravação e em terminar para concluir a gravação.
+                            </p>
+                            <video id="your-video-id" controls autoplay=""></video>
                                 <div class="form-horizontal">
                                 
-                                        <button id="iniciar" class="btn btn-small btn-danger" type="button"> Começar gravação </button>
-                                
-                                        <button class="btn btn-small btn-success" id="terminar" type="button" disabled>Terminar Gravação</button>
+                                    <button id="iniciar" class="btn btn-small btn-danger" type="button"> Começar gravação </button>
+                        
+                                    <button class="btn btn-small btn-success" id="terminar" type="button" disabled>Terminar Gravação</button>
                                 </div>
                                     
-                                    <script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
+                                <script type="text/javascript" src="{% static 'camera/camera.js' %} "></script>
                             
                                 
                             </div>
     
-                            {% endif %}
+                           
                                 
                         </div>
                     <div class="pull-right">

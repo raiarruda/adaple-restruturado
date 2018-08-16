@@ -19,7 +19,6 @@ from .models import Edp, Habilidade, RecursosEdp, RespostaEdp
 
 User = get_user_model()
 
-
 @login_required
 def edps(request):
 
@@ -110,6 +109,8 @@ def adicionar_recursos(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
     template = 'edp/adicionar_recursos.html'
     title = 'Adicionar Recursos a EDA - ' + edp.titulo
+    uploaded_file_url = 'media/none.mp4'
+
 
     if request.method == "POST":
         print("\nPOST\n")
@@ -187,7 +188,7 @@ def responder_edp(request, slug):
     recursos = get_object_or_404(RecursosEdp, edp=edp)
     template = 'edp/edp_responder.html'
     title = 'Responder a EDA - ' + edp.titulo
-    # uploaded_file_url = 'media/none.mp4'
+    uploaded_file_url = 'media/none.mp4'
     if request.method == "POST":
         print("\nPOST\n")
         form = form_resposta_edp(request.POST, request.FILES)
@@ -207,9 +208,9 @@ def responder_edp(request, slug):
             resposta.aprendiz = request.user
            
             resposta.save()
-            return HttpResponse(json.dumps({'url': reverse("edp:edps"), 'alerta':'Respondido com sucesso!'}), content_type='application/json')
+            return HttpResponse(json.dumps({'url': reverse("edp:edps"), 'alerta': 'Recursos adicionados a EDA com sucesso'}), content_type='application/json')
+            
         else:
-            print("aqui3")
             print(form.errors.as_json)
             return redirect('edp:edps')
     else:
@@ -224,3 +225,16 @@ def pesquisaEdp(request):
     edps_pesquisa = EdpFilter(request.GET, queryset=edps)
 
     return render(request, template_name, {'edps_pesquisa': edps_pesquisa, 'title': title})
+
+@teacher_required
+def listarRespostasEDA(request):
+
+    edps = RespostaEdp.objects.all()
+    recursos = RecursosEdp.objects.all()
+    title = 'Estruturas Digitais Pedagogicas'
+    template = 'edp/edp_listarRespondidas.html'
+
+    for edp in edps:
+        print(edp.aprendiz)
+
+    return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})

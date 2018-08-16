@@ -4,10 +4,10 @@
                 
 
 {% block dashboard %}
-{% if user.is_authenticated and user.eh_professor %}
+
+<div style="padding-top: 20px;padding-bottom: 20px;">{% if user.is_authenticated and user.eh_professor %}
 <a href="{% url 'edp:nova_edp' %}" class="btn btn-success btn-lg ">Nova <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr></a>
-{% endif %}
-<div style="padding: 10px;"></div>
+{% endif %}</div>
 
 <script>
 $(document).ready( function () {
@@ -24,7 +24,7 @@ $(document).ready( function () {
 
 </script>
 
-<table id="myTable" class="table table-hover table-stripped table-responsive-sm table-sm">
+<table  class="table table-hover table-stripped table-responsive-sm table-sm">
     <thead>
       <tr>
         <th scope="col table-bordered">Título</th>
@@ -43,7 +43,7 @@ $(document).ready( function () {
         <th scope="row">
             
             
-            <a  {% if edp.recursos %} href="{{edp.get_absolute_url}}" {%endif%} >{{edp}}</a></th>
+            <a  {% if edp.recursos and user.is_authenticated and user.eh_professor %} href="{{edp.get_absolute_url}}" {%endif%} >{{edp}}</a></th>
         <td>{% for h in edp.habilidades.all %}
             <ul class="list-group">
                 <li class="ml-4">{{h}}</li>
@@ -62,7 +62,7 @@ $(document).ready( function () {
 
             </td>
             <td>
-                {% if edp.recursos.count != 0 %}
+                {% if edp.recursos %}
                     <a href="{% url 'edp:editar_recursos' edp.slug %}" class="btn btn-sm btn-info "><i class="fa fa-edit"></i> Recursos</a>   
                 {% else %}
                     <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-sm btn-warning "><i class="fa fa-plus"></i> Recursos</a> 
