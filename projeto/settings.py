@@ -25,7 +25,7 @@ SECRET_KEY = '4^lkt^5(z53@aw3#0-4aa7!u=l)p)e8o*02#=5_k^cv)70mim_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'adalin.pythonanywhere.com']
+ALLOWED_HOSTS = [ 'adalin.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition

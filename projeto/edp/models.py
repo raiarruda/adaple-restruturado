@@ -106,20 +106,18 @@ class RespostaEdp(models.Model):
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
 
-    def aluno(self):
-        return self.aluno
-   
+
     def __str__(self):
-        return self.edp.titulo
+        return self.edp.titulo + " - " + self.aprendiz.username
     
     def iniciar(self):
         self.save()
-    # @models.permalink
-    # def get_absolute_url(self):
-    #     return ('edp:detalhe_edp', (), {'slug': self.slug})
+    @models.permalink
+    def get_absolute_url(self):
+        return ('edp:detalhe_edp_resposta', (), {'slug': self.slug})
 
     class Meta:
         verbose_name = 'Resposta Estrutura Digital de Aprendizagem'
         verbose_name_plural = 'Resposta Estrutura Digital de Aprendizagem'
-        ordering = ['edp']
+        ordering = ['-created_at']
 
