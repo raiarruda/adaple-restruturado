@@ -5,8 +5,11 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.http import (Http404, HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse, StreamingHttpResponse)
-from django.shortcuts import (get_object_or_404, redirect, render, render_to_response)
+from django.http import (Http404, HttpRequest, HttpResponse,
+                         HttpResponseRedirect, JsonResponse,
+                         StreamingHttpResponse)
+from django.shortcuts import (get_list_or_404, get_object_or_404, redirect,
+                              render, render_to_response)
 from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
@@ -229,12 +232,48 @@ def pesquisaEdp(request):
 @teacher_required
 def listarRespostasEDA(request):
 
-    edps = RespostaEdp.objects.all()
-    recursos = RecursosEdp.objects.all()
-    title = 'Estruturas Digitais Pedagogicas'
-    template = 'edp/edp_listarRespondidas.html'
+    edpsTodas = Edp.objects.all()
+    title = 'Estruturas Digitais Pedagogicas - Lista de EDA respondidas'
+    template = 'edp/listarEDArespondida.html'
+    edps = list()
+   
+   
+    for edp in edpsTodas:
+        
+        if edp.respostas.all().count() != 0:
+        
+            edps.append(edp)
+            
+    print("\n--- Lista de respondidas \n ")
+    return render(request, template, {'title': title, 'edps': edps})
 
-    for edp in edps:
-        print(edp.aprendiz)
+def listaAlunosResponderamEdp(request, slug):
+    edp = get_object_or_404(Edp, slug=slug)
+    respostas = RespostaEdp.objects.filter(edp=edp).order_by('-aprendiz')
+    # lista =list(respostas)
+    lista_aprendiz=list()
 
-    return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+    for r in range(len(respostas)):
+        if r==0:
+            lista_aprendiz.append(respostas[r])
+        else:
+            if respostas[r].aprendiz == respostas[r-1].aprendiz:
+                pass
+            else:
+                lista_aprendiz.append(respostas[r])
+    return render(request, 'edp/lista_alunos_EDARespondida.html', {'lista':lista_aprendiz})
+
+
+def respostasEdp(request, id):
+    resposta = get_object_or_404(RespostaEdp, id=id)
+    edp = get_object_or_404(Edp, pk = resposta.edp.pk)
+    aprendiz = get_object_or_404(User, pk = resposta.aprendiz.pk)
+    print(edp)
+    print(aprendiz)
+    respostas_edp = RespostaEdp.objects.filter(edp=edp, aprendiz=aprendiz)
+    print(respostas_edp)
+    # resposta = get_object_or_404(RespostaEdp, id=id)
+    # edp = get_object_or_404(Edp, pk = resposta.edp.pk)
+    # recursos = get_object_or_404(RecursosEdp, edp= edp)
+
+    return render (request, 'edp/resposta.html', {'respostas':respostas_edp})
