@@ -1,7 +1,7 @@
-{% extends 'base.html' %} {% block title %} {{title}}{% endblock %} 
+{% extends 'base.html' %} {% block title %} {{title}}{% endblock %}
 {%load widget_tweaks %}
 
-                
+
 
 {% block dashboard %}
 
@@ -12,10 +12,10 @@
 <script>
 $(document).ready( function () {
     $('#myTable').DataTable(
-    { 
+    {
             "columnDefs": [
                 { "orderable": true, "targets": 0 }
-        ], 
+        ],
     paging: false
 }    );
 
@@ -123,15 +123,15 @@ $(document).ready( function () {
         <th scope="col">Professor(a)</th>
         <th scope="col"><abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr></th>
         <th scope="col"></th>
-        
+
       </tr>
     </thead>
     {% for edp in edps%}
     <tbody>
       <tr>
         <th scope="row">
-            
-            
+
+
             <a  {% if edp.recursos and user.is_authenticated and user.eh_professor %} href="{{edp.get_absolute_url}}" {%endif%} >{{edp}}</a></th>
         <td>{% for h in edp.habilidades.all %}
             <ul class="list-group">
@@ -141,7 +141,7 @@ $(document).ready( function () {
         <td>{{edp.get_nivel_display}}</td>
         <td>{{edp.created_at |date:"d/m/Y"}}</td>
         <td>{{edp.usuario}}</td>
-        <td> 
+        <td>
 
             <small class="text-right" >
              {% if user.is_authenticated and user.eh_professor %}
@@ -152,35 +152,35 @@ $(document).ready( function () {
             </td>
             <td>
                 {% if edp.recursos %}
-                    <a href="{% url 'edp:editar_recursos' edp.slug %}" class="btn btn-sm btn-info "><i class="fa fa-edit"></i> Recursos</a>   
+                    <a href="{% url 'edp:editar_recursos' edp.slug %}" class="btn btn-sm btn-info "><i class="fa fa-edit"></i> Recursos</a>
                 {% else %}
-                    <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-sm btn-warning "><i class="fa fa-plus"></i> Recursos</a> 
+                    <a href="{% url 'edp:adicionar_recursos' edp.slug %}" class="btn btn-sm btn-warning "><i class="fa fa-plus"></i> Recursos</a>
                 {% endif %}
-    
+
                 {% elif user.is_authenticated and user.eh_aluno %}
 
-                
-                
+
+
                 {% if  edp.recursos.count != 0 %}
                 <a href="{% url 'edp:responder_edp' edp.slug %}" class="btn btn-sm btn-info ">Responder <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr></a>
                {%endif%}
 
-                
-               
-                
+
+
+
                 {% endif %}
-                
-    
+
+
             </small>
-            
+
         </td>   {% empty%}
-   <td>Nenhuma <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr> disponível.</td> 
+   <td>Nenhuma <abbr title="Estrutura Digital de Aprendizagem" class="initialism">EDA</abbr> disponível.</td>
       </tr>
 
-    </tbody> 
-  
+    </tbody>
+
     {%endfor%}
-  
+
   </table>
 
 
