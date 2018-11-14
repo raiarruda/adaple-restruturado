@@ -18,6 +18,7 @@ from rest_framework.response import Response
 from .decorators import student_required, teacher_required
 from .filters import EdpFilter
 from .forms import Edp_form, form_recursos_edp, form_resposta_edp
+from watson_developer_cloud import LanguageTranslatorV3
 from .models import Edp, Habilidade, RecursosEdp, RespostaEdp
 
 User = get_user_model()
@@ -29,6 +30,14 @@ def edps(request):
     recursos = RecursosEdp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
+
+    user = request.user
+    for x in user.respostaAluno.all():
+        nivelx = x.edp.nivel
+       
+        print (nivelx == user.student.nivel )
+    # edps_fala = 
+    user.respostaAluno.filter()
 
     return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
 
@@ -250,7 +259,6 @@ def listarRespostasEDA(request):
 def listaAlunosResponderamEdp(request, slug):
     edp = get_object_or_404(Edp, slug=slug)
     respostas = RespostaEdp.objects.filter(edp=edp).order_by('-aprendiz')
-    # lista =list(respostas)
     lista_aprendiz=list()
 
     for r in range(len(respostas)):
@@ -268,12 +276,39 @@ def respostasEdp(request, id):
     resposta = get_object_or_404(RespostaEdp, id=id)
     edp = get_object_or_404(Edp, pk = resposta.edp.pk)
     aprendiz = get_object_or_404(User, pk = resposta.aprendiz.pk)
-    print(edp)
-    print(aprendiz)
     respostas_edp = RespostaEdp.objects.filter(edp=edp, aprendiz=aprendiz)
-    print(respostas_edp)
-    # resposta = get_object_or_404(RespostaEdp, id=id)
-    # edp = get_object_or_404(Edp, pk = resposta.edp.pk)
-    # recursos = get_object_or_404(RecursosEdp, edp= edp)
+    
+
 
     return render (request, 'edp/resposta.html', {'respostas':respostas_edp})
+
+def traducao(request):
+    template = 'edp/tradutor.html'
+    language_translator = LanguageTranslatorV3(
+        version='2018-05-01',
+        iam_apikey='k0JDRL55UH4gmh95MHKJI4ZBH78TBd2oAH7rKZMdIoB3',
+        url='https://gateway.watsonplatform.net/language-translator/api'
+    )
+
+
+   
+    if request.method == 'POST':
+        origem = request.POST['origem']
+        languages = language_translator.identify(origem).get_result()
+
+        # languages = json.dumps(languages, indent=2)
+  
+        lingua_origem = languages['languages'][0]['language']
+
+        # print(f'{lingua_origem}-pt')
+
+        destino = language_translator.translate(
+        text=origem,
+        model_id=f'en-pt').get_result()
+
+        return HttpResponse(json.dumps(destino), content_type='application/json')
+        # //destino =tradutor.translate(origem, dest='pt').text
+        return render(request, template, {'origem':origem, 'destino':destino})
+    else:
+        return render(request, template, {'origem':'', 'destino':''})
+

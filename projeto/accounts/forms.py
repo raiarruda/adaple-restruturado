@@ -16,7 +16,7 @@ class CadastroAlunoForm(UserCreationForm):
         user = super().save(commit=False)
         user.eh_aluno = True
         user.save()
-        student = Student.objects.create(user=user)
+        student = Student.objects.create(user=user, nivel=0)
 
         return user
         

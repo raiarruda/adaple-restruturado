@@ -1,0 +1,65 @@
+
+{% load static %}
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href=" {% static 'vendor/metisMenu/metisMenu.min.css' %}   " rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href=" {% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href=" {% static 'vendor/morrisjs/morris.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href=" {% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script>
+    // $(function(){
+        $.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+});
+
+        function traduzir(msg){
+           
+
+            return $.ajax({
+                    method:'post',                    
+                    url:'{% url 'edp:tradutor' %}',
+
+                    data: {
+                        origem: $('textarea[name="origem"]').val()
+                    },
+            }).done(function(msg){
+                console.log(msg.translations[0].translation)
+                $('#destino').val(msg.translations[0].translation)
+            })
+        }
+
+        $('a.traduz').on('click', function (e) {
+            alert('')
+            
+            // e.preventDefault();
+            // var text = $('input[name="origem"]').val();
+            // console.log(text);
+            // text = encodeURIComponent(text);
+            // console.log(text);
+
+        })
+        
+    // })();
+   
+</script>
+
+<form method="POST">
+    {% csrf_token %}
+    <!-- <input name="origem"> -->
+    <textarea name="origem">hello</textarea>
+    <button type="button" class="traduz" onclick="traduzir()">Traduzir</button>
+</form>
+
+<textarea class="form-control" rows="5" disabled id='destino'></textarea>

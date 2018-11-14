@@ -17,10 +17,13 @@ urlpatterns = [
     path('edp/detalhes/<slug:slug>', views.detalhe_edp, name= 'detalhe_edp'),
     path('edp/nova', views.nova_edp, name= "nova_edp"),
     path('edp/adicionar/recursos/<slug:slug>', views.adicionar_recursos, name= "adicionar_recursos"),
-    path('edp/editar/<slug:slug>', views.editar_edp, name= "editar_edp"),
-    path('edp/recursos/editar/<slug:slug>', views.editar_recursos, name='editar_recursos'),
-    path('edp/deletar/<slug:slug>', views.deletar_edp, name= "deletar_edp"),
-    path('edp/responder/<slug:slug>', views.responder_edp, name="responder_edp"),
-    path('edp/pesquisa', views.pesquisaEdp, name='pesquisa'),
+    path('edp/editar/<slug:slug>/', views.editar_edp, name= "editar_edp"),
+    path('edp/recursos/editar/<slug:slug>/', views.editar_recursos, name='editar_recursos'),
+    path('edp/deletar/<slug:slug>/', views.deletar_edp, name= "deletar_edp"),
+    path('edp/responder/<slug:slug>/', views.responder_edp, name="responder_edp"),
+    path('edp/pesquisa/', views.pesquisaEdp, name='pesquisa'),
+    path('edp/tradutor', views.traducao, name='tradutor'),
+
+    # path('api/tradutor', views.traducao, name='traducao'),
 
 ]
