@@ -31,9 +31,9 @@ def edps(request):
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
     user = request.user
- 
+    
     edps_nivel = edps.exclude(nivel=user.student.nivel)
-    print(edps_nivel)
+    # print(edps_nivel)
 
     # for x in user.respostaAluno.all():
     #     nivelx = x.edp.nivel
@@ -56,8 +56,13 @@ def minhas_edps(request):
 
 @student_required
 def minhas_edps_aluno(request):
-    edps = request.user.edps.all()
+    respostas = request.user.respostaAluno.all()
     recursos = RecursosEdp.objects.all()
+    edps = list()
+
+
+    for e in respostas:
+        edps.append(e.edp)
 
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'

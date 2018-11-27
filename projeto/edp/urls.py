@@ -9,6 +9,7 @@ app_name='edp'
 urlpatterns = [
     path('', views.edps, name='edps'),
     path('minhas', views.minhas_edps, name='minhas_edps'),
+    path('minhas/aluno', views.minhas_edps_aluno, name='minhas_edps_aluno'),
     path('edp/respondidas', views.listarRespostasEDA, name='respondidas'),
 
     path('aluno/<int:id>/respostas', views.respostasEdp, name='resposta_edp'),

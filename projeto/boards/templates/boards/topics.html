@@ -6,17 +6,17 @@
 
 {% block dashboard %}
   <div class="mb-4">
-    <a href="{% url 'new_topic' board.pk %}" class="btn btn-primary">New topic</a>
+    <a href="{% url 'boards:new_topic' board.pk %}" class="btn btn-primary">Novo Tópico</a>
   </div>
 
   <table class="table">
     <thead class="thead-inverse">
       <tr>
-        <th>Topic</th>
-        <th>Starter</th>
-        <th>Replies</th>
-        <th>Views</th>
-        <th>Last Update</th>
+        <th>Tópico</th>
+        <th>Autor</th>
+        <th>Respostas</th>
+        <th>Visualizações</th>
+        <th>Ultima atualização</th>
       </tr>
     </thead>
     <tbody>

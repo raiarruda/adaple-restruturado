@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('projeto.accounts.urls', namespace='accounts')),
     path('edps/', include('projeto.edp.urls', namespace='edp')),
+    path('forum/', include('projeto.boards.urls', namespace='boards')),
     path('accounts/', include('django.contrib.auth.urls')),
 
 

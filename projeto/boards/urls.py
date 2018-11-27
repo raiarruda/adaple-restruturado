@@ -1,13 +1,14 @@
 from django.conf.urls import url
 from django.contrib import admin
+from django.urls import include, path
 
-from boards import views
-app_name='edp'
+from projeto.boards import views
+app_name='boards'
 
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
-    url(r'^boards/(?P<pk>\d+)/$', views.board_topics, name='board_topics'),
-    url(r'^boards/(?P<pk>\d+)/new/$', views.new_topic, name='new_topic'),
-    url(r'^admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('admin/', admin.site.urls),
+    path('boards/<int:pk>/', views.board_topics, name='board_topics'),
+    path('boards/<int:pk>/new/', views.new_topic, name='new_topic'),
 ]
