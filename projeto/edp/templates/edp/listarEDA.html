@@ -23,7 +23,7 @@ $(document).ready( function () {
 
 
 </script>
-
+{% if user.is_authenticated and user.eh_aluno %}
 <div class="row">
         <div class="col-lg-12">
               
@@ -70,7 +70,7 @@ $(document).ready( function () {
 {% endfor %}
 </div>
 
-
+{% endif %}
 <div class="row">
         <div class="col-lg-12">
               
