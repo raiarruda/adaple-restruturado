@@ -41,7 +41,7 @@
         }
 
         $('a.traduz').on('click', function (e) {
-            alert('')
+            alert('');
             
             // e.preventDefault();
             // var text = $('input[name="origem"]').val();
@@ -55,11 +55,37 @@
    
 </script>
 
-<form method="POST">
-    {% csrf_token %}
-    <!-- <input name="origem"> -->
-    <textarea name="origem">hello</textarea>
-    <button type="button" class="traduz" onclick="traduzir()">Traduzir</button>
-</form>
 
-<textarea class="form-control" rows="5" disabled id='destino'></textarea>
+<button type="button" onclick="$('#form-tradutor').show(); $(this).hide()" class="btn btn-outline btn-primary btn-lg "> Tradutor </button>
+
+
+
+
+<div id="form-tradutor" style="padding: 10px; display: none;">
+
+    <form class="form-inline"  method="POST">
+
+
+        {% csrf_token %}
+        <div class="form-group mb-2">
+            <label for="origem" class="sr-only">Texto</label>
+
+            <textarea class="form-control" id="origem "name="origem"></textarea>
+
+        </div>
+
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="traduzido" class="sr-only">Tradução:</label>
+
+            <textarea class="form-control" readonly id='destino'></textarea>
+
+        </div>
+
+        <button type="button" class="traduz btn btn-primary mb-2" onclick="traduzir()">Traduzir</button>
+
+
+    </form>
+
+</div>
+
+

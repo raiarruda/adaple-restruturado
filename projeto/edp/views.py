@@ -30,16 +30,18 @@ def edps(request):
     recursos = RecursosEdp.objects.all()
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
-
     user = request.user
-    for x in user.respostaAluno.all():
-        nivelx = x.edp.nivel
-       
-        print (nivelx == user.student.nivel )
-    # edps_fala = 
-    user.respostaAluno.filter()
+ 
+    edps_nivel = edps.exclude(nivel=user.student.nivel)
+    print(edps_nivel)
 
-    return render(request, template, {'title': title, 'edps': edps, 'recursos': recursos})
+    # for x in user.respostaAluno.all():
+    #     nivelx = x.edp.nivel
+       
+    #     print (nivelx == user.student.nivel )
+    # user.respostaAluno.filter()
+
+    return render(request, template, {'title': title, 'edps': edps,'edps_nivel':edps_nivel ,'recursos': recursos})
 
 @teacher_required
 def minhas_edps(request):
@@ -290,22 +292,12 @@ def traducao(request):
         url='https://gateway.watsonplatform.net/language-translator/api'
     )
 
-
-   
     if request.method == 'POST':
         origem = request.POST['origem']
         languages = language_translator.identify(origem).get_result()
-
-        # languages = json.dumps(languages, indent=2)
-  
         lingua_origem = languages['languages'][0]['language']
-
-        # print(f'{lingua_origem}-pt')
-
         destino = language_translator.translate(text=origem,model_id='en-pt').get_result()
-
         return HttpResponse(json.dumps(destino), content_type='application/json')
-        # //destino =tradutor.translate(origem, dest='pt').text
         return render(request, template, {'origem':origem, 'destino':destino})
     else:
         return render(request, template, {'origem':'', 'destino':''})

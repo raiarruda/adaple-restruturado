@@ -58,7 +58,7 @@ return false;
 </script>
 
 
-{% include 'edp/tradutor.html' %}
+
 
 <div class="row">
         <div class="col-lg-12">
@@ -143,12 +143,16 @@ return false;
                     {% csrf_token %}
                         <div class="form-group">
                             {% if recursos.recebe_texto == True %}
+                            {% include 'edp/tradutor.html' %}
+
+
                                 {{form.texto | bootstrap}}
                             {% endif%} 
                             {% if recursos.recebe_video_embedded == True %} 
                                 {{form.video_embedded | bootstrap}}
                             {% endif %}
                             
+                     
                             
                             {% if recursos.recebe_video == True %}  
                             <button type="button" onclick="$('#espaco-video').show(); $(this).hide()" class="btn btn-outline btn-primary btn-lg ">Gravar Video </button>
