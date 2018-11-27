@@ -4,10 +4,20 @@
 
 
 
+
 {% block dashboard %}
-  <form method="post" novalidate>
+<div class="row">
+<h1 class="page-header">Novo Tópico</h1>
+
+</div>
+<div class="row">
+
+<form method="post" novalidate>
     {% csrf_token %}
     {% include 'boards/includes/form.html' %}
     <button type="submit" class="btn btn-success">Postar</button>
   </form>
+
+</div>
+
 {% endblock %}
