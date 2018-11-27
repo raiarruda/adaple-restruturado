@@ -302,7 +302,7 @@ def traducao(request):
 
         # print(f'{lingua_origem}-pt')
 
-        destino = language_translator.translate(text=origem,model_id=f'en-pt'.get_result()
+        destino = language_translator.translate(text=origem,model_id=f'en-pt').get_result()
 
         return HttpResponse(json.dumps(destino), content_type='application/json')
         # //destino =tradutor.translate(origem, dest='pt').text
