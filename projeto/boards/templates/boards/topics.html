@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block dashboard %}
-  <div class="mb-4">
-    <a href="{% url 'boards:new_topic' board.pk %}" class="btn btn-primary">Novo Tópico</a>
-  </div>
-
+ 
+  <div style="padding-top: 20px;padding-bottom: 20px;">
+      <a href="{% url 'boards:new_topic' board.pk %}" class="btn btn-primary">Novo Tópico</a>
+   </div>
+  
   <table class="table">
     <thead class="thead-inverse">
       <tr>

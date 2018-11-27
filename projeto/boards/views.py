@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404 #TODO: pesquisar sobre isso get_list_or_404
+# TODO: pesquisar sobre isso get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 User = get_user_model()
 
-from .forms import NewTopicForm
+from .forms import NewTopicForm, NewBoardForm
 from .models import Board, Topic, Post
 
 
@@ -20,7 +21,7 @@ def board_topics(request, pk):
 
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
-    user = request.user 
+    user = request.user
     if request.method == 'POST':
         form = NewTopicForm(request.POST)
         if form.is_valid():
@@ -33,7 +34,25 @@ def new_topic(request, pk):
                 topic=topic,
                 created_by=user
             )
-            return redirect('boards:board_topics', pk=board.pk)  # TODO: redirect to the created topic page
+            # TODO: redirect to the created topic page
+            return redirect('boards:board_topics', pk=board.pk)
     else:
         form = NewTopicForm()
     return render(request, 'boards/new_topic.html', {'board': board, 'form': form})
+
+
+def new_board(request):
+    template = 'boards/new_board.html'
+
+    if request.method == "POST":
+        form = NewBoardForm(request.POST)
+        if form.is_valid():
+
+            edp = form.save(request)
+
+            edp.save()
+
+            return redirect('boards:home')
+    else:
+        form = NewBoardForm()
+        return render(request, template, {'form': form})

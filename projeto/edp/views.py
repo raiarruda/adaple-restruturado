@@ -31,8 +31,11 @@ def edps(request):
     title = 'Estruturas Digitais Pedagogicas'
     template = 'edp/listarEDA.html'
     user = request.user
+    if request.user.eh_aluno == True:
+        edps_nivel = edps.exclude(nivel=user.student.nivel)
+    else:
+        edps_nivel = edps #gambiarra
     
-    edps_nivel = edps.exclude(nivel=user.student.nivel)
     # print(edps_nivel)
 
     # for x in user.respostaAluno.all():

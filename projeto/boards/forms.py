@@ -1,7 +1,6 @@
 from django import forms
 
-from .models import Topic
-
+from .models import Topic, Board
 
 class NewTopicForm(forms.ModelForm):
     message = forms.CharField(
@@ -17,3 +16,14 @@ class NewTopicForm(forms.ModelForm):
     class Meta:
         model = Topic
         fields = ['subject', 'message']
+
+class NewBoardForm(forms.ModelForm):
+    name = forms.CharField(label="Nome",
+        max_length=30
+    )
+    description=forms.CharField(max_length=100, label="Descrição")
+
+    class Meta:
+        model = Board
+        fields = ['name', 'description']
+

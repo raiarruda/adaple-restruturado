@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block dashboard %}
+
+<div>
+
+<div style="padding-top: 20px;padding-bottom: 20px;">{% if user.is_authenticated and user.eh_professor %}
+    <a href="{% url 'boards:new_board' %}" class="btn btn-success btn-lg ">Novo Quadro de Tópicos</a>
+    {% endif %}</div>
+</div>
   <table class="table">
     <thead class="thead-inverse">
       <tr>

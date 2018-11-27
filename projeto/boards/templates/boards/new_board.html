@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Comece um novo tópico de discussão{% endblock %}
+
+
+
+
+{% block dashboard %}
+<div class="row">
+<h1 class="page-header">Novo Quadro</h1>
+
+</div>
+<div class="row">
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% include 'boards/includes/form.html' %}
+    <button type="submit" class="btn btn-success">Criar</button>
+  </form>
+
+</div>
+
+{% endblock %}
