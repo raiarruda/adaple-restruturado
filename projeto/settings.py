@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_filters',
     'widget_tweaks',
+    'watson_developer_cloud',
+ 
 ]
 
 MIDDLEWARE = [
